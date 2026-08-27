@@ -1,0 +1,6 @@
+
+NS03        Hat dieu rang muoi            200         250         
+NS05        Thanh long ruot do            100         15          
+NS01        Gao ST25                      100         35.5        
+NS04        Tieu den                      80          90.5        
+NS02        Ca phe Trung Nguyen           50          120         
