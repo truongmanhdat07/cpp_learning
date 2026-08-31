@@ -49,6 +49,7 @@ void xuatDanhSach(ostream &out, SinhVien *danhSachSinhVien, int soLuongSinhVien)
 int timKiemTheoMaSinhVien(SinhVien *danhSachSinhVien, int soLuongSinhVien, string maSinhVienCanTim);
 ThongKe thongKeHocLuc(SinhVien *danhSachSinhVien, int soLuongSinhVien);
 void inBangThongKe(ostream &out, ThongKe &sinhVien);
+void sapXepTheoDiemTrungBinhGiamDan(SinhVien *danhSachSinhVien, int soLuongSinhVien);
 
 
 
@@ -135,7 +136,7 @@ int main(){
 	string tenFileInput;
 	cout << "Nhap ten file de doc :";	getline(cin, tenFileInput);
 	
-	fstream fileIn(tenFileInput);
+	ifstream fileIn(tenFileInput);
 	if(!fileIn){
 		cerr << "Khong the mo file " << tenFileInput;
 		return 1;
@@ -163,8 +164,16 @@ int main(){
 	cout << "\nBang thong ke sinh vien theo hoc luc la :\n";
 	inBangThongKe(cout, sinhVien);
 	
-	
-	
+	sapXepTheoDiemTrungBinhGiamDan(danhSachSinhVien, soLuongSinhVien);
+	string tenFileOutput;
+	cout << "\nNhap ten file de xuat danh sach :";	getline(cin, tenFileOutput);
+	ofstream fileOut(tenFileOutput);
+	if(!fileOut){
+		cerr << "\nKhong the mo file " << tenFileOutput;
+		return 1;
+	}
+	xuatDanhSach(fileOut, danhSachSinhVien, soLuongSinhVien);
+	cout << "\nXuat thanh cong danh sach sinh vien vao file " << tenFileOutput;
 	
 	
 	delete[] danhSachSinhVien;
@@ -222,5 +231,24 @@ void inBangThongKe(ostream &out, ThongKe &sinhVien){
     	<< left << setw(15) << "Kha"        << ": " << sinhVien.kha        << " sinh vien\n"
     	<< left << setw(15) << "Trung binh" << ": " << sinhVien.trungBinh  << " sinh vien\n"
     	<< left << setw(15) << "Yeu"        << ": " << sinhVien.yeu        << " sinh vien\n";
+	out << endl;
+}
 
+void sapXepTheoDiemTrungBinhGiamDan(SinhVien *danhSachSinhVien, int soLuongSinhVien){
+	for(int i=0; i<soLuongSinhVien - 1; i++){
+		for(int j=i+1; j<soLuongSinhVien; j++){
+			if(danhSachSinhVien[i].getGpa() < danhSachSinhVien[j].getGpa()){
+				SinhVien temp = danhSachSinhVien[i];
+				danhSachSinhVien[i] = danhSachSinhVien[j];
+				danhSachSinhVien[j] = temp;
+			}
+			else if(danhSachSinhVien[i].getGpa() == danhSachSinhVien[j].getGpa()){
+				if(danhSachSinhVien[i].getHoTen() > danhSachSinhVien[j].getHoTen()){
+					SinhVien temp = danhSachSinhVien[i];
+					danhSachSinhVien[i] = danhSachSinhVien[j];
+					danhSachSinhVien[j] = temp;				
+				}
+			}
+		}
+	}
 }
