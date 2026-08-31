@@ -35,10 +35,20 @@ class SinhVien: public Nguoi{
 };
 
 
+class ThongKe{
+	public:
+		int gioi = 0;
+		int kha = 0;
+		int trungBinh = 0;
+		int yeu = 0;
+};
+
 
 void nhapDanhSach(istream &in, SinhVien *danhSachSinhVien, int soLuongSinhVien);
 void xuatDanhSach(ostream &out, SinhVien *danhSachSinhVien, int soLuongSinhVien);
 int timKiemTheoMaSinhVien(SinhVien *danhSachSinhVien, int soLuongSinhVien, string maSinhVienCanTim);
+ThongKe thongKeHocLuc(SinhVien *danhSachSinhVien, int soLuongSinhVien);
+void inBangThongKe(ostream &out, ThongKe &sinhVien);
 
 
 
@@ -149,6 +159,13 @@ int main(){
 	}
 	else 	cout << "\nKhong tim thay sinh vien co ma la " << maSinhVienCanTim;
 	
+	ThongKe sinhVien = thongKeHocLuc(danhSachSinhVien, soLuongSinhVien);
+	cout << "\nBang thong ke sinh vien theo hoc luc la :\n";
+	inBangThongKe(cout, sinhVien);
+	
+	
+	
+	
 	
 	delete[] danhSachSinhVien;
 	return 0;
@@ -185,4 +202,25 @@ int timKiemTheoMaSinhVien(SinhVien *danhSachSinhVien, int soLuongSinhVien, strin
 		if(danhSachSinhVien[i].getMaSinhVien() == maSinhVienCanTim)	return i;
 	}
 	return -1;
+}
+
+ThongKe thongKeHocLuc(SinhVien *danhSachSinhVien, int soLuongSinhVien){
+	ThongKe ketQua;
+	
+	for(int i=0; i<soLuongSinhVien; i++){
+		string loai = danhSachSinhVien[i].getXepLoai();
+		if(loai == "Gioi")				ketQua.gioi++;
+		else if(loai == "Kha")			ketQua.kha++;
+		else if(loai == "Trung binh")	ketQua.trungBinh++;
+		else if(loai == "Yeu")			ketQua.yeu++;
+	}
+	return ketQua;
+}
+
+void inBangThongKe(ostream &out, ThongKe &sinhVien){
+    out << left << setw(15) << "Gioi"       << ": " << sinhVien.gioi       << " sinh vien\n"
+    	<< left << setw(15) << "Kha"        << ": " << sinhVien.kha        << " sinh vien\n"
+    	<< left << setw(15) << "Trung binh" << ": " << sinhVien.trungBinh  << " sinh vien\n"
+    	<< left << setw(15) << "Yeu"        << ": " << sinhVien.yeu        << " sinh vien\n";
+
 }
