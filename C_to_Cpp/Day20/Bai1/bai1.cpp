@@ -4,6 +4,8 @@
 
 using namespace std;
 
+const namHienTai = 2026;
+
 
 class Xe{
 	protected:
@@ -21,9 +23,12 @@ class Xe{
 			this->namSX = namSX;
 			this->giaXe = giaXe;
 		};
-		~virtual Xe(){};
+		virtual ~Xe(){};
+		
+		virtual float getChiPhiBaoDuong() = 0;
 		
 		virtual void nhap();
+		virtual void xuat();
 };
 
 
@@ -42,6 +47,10 @@ class XeTai : public Xe{
 		}
 		~XeTai() override{};
 		
+		float getChiPhiBaoDuong() override;
+		
+		void nhap();
+		void xuat();
 };
 
 
@@ -53,21 +62,95 @@ class XeKhach : public Xe{
 	public:
 		XeKhach() : Xe(), soGhe(0), phamVi(""){};
 		XeKhach(string maXe, string bienSo, string hangXe, int namSX, float giaXe,
-				int soghe, string phamVi) 
-				: Xe(maXe, bienSo, hangXe, namSX, giaVe) {
+				int soGhe, string phamVi) 
+				: Xe(maXe, bienSo, hangXe, namSX, giaXe) {
 					
 				this->soGhe = soGhe;
 				this->phamVi = phamVi;
 				}
 		~XeKhach() override{};
 		
+		float getChiPhiBaoDuong() override;
+		
+		void nhap();
+		void xuat();
 };
+
+float XeTai::getChiPhiBaoDuong(){
+	float chiPhi = 2000000.0 + ( taiTrong * 1500000.0 );
+	
+	if(loaiThung == "dong lanh")	chiPhi *= 1.2;
+	
+	return chiPhi;
+}
+
+float XeKhach::getChiPhiBaoDuong(){
+	float chiPhi = 2000000.0 + (soGhe * 100000.0);
+	
+	if(phamVi == "lien tinh")	chiPhi *= 1.15;
+	
+	return chiPhi;
+}
+
+
 
 
 void Xe::nhap(){
 	cout << "\nNhap ma xe:";		getline(cin, maXe);
 	cout << "Nhap bien so xe:";		getline(cin, bienSo);
 	cout << "Nhap hang xe:";		getline(cin, hangXe);
-	cout << "Nhap nam san xuat:";	cin >> namSX;
+	do{
+		cout << "Nhap nam san xuat:";	cin >> namSX;
+		if(namSX > namHienTai)	cout << "\nNam san xuat khong hop le vui long nhap lai!";
+	}while(namSx > namHienTai);
+
 	cout << "Nhap gia xe:";			cin >> giaXe;	cin.ignore();
+}
+
+void XeTai::nhap(){
+	Xe::nhap();
+	cout << "Nhap loai thung:";		getline(cin, loaiThung);
+	cout << "Nhap tai trong:";		cin >> taiTrong;	cin.ignore();
+}
+
+void XeKhach::nhap(){
+	Xe::nhap();
+	cout << "Nhap pham vi:";		getline(cin, phamVi);
+	cout << "Nhap so ghe:";			cin >> soGhe;
+}
+
+void Xe::xuat(){
+	cout << left << setw(12) << maXe 	<< left << setw(15) << bienSo 
+		 << left << setw(20) << hangXe  << left << setw(12) << namSX
+		 << left << setw(12) << fixed   << setprecision(2)  << giaXe;
+}
+
+void XeTai::xuat(){
+	Xe::xuat();
+	cout << left << setw(12) << fixed << setprecision(2) << trongTai << left << setw(15) << loaiThung;
+}
+
+void XeKhach::xuat(){
+	Xe::xuat();
+	cout << left << setw(12) << phamVi << left << setw(12) << soGhe;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int main(){
+	int soLuongXe;
+	cout << "Nhap so luong xe:";	cin >> soLuongXe; 	cin.ignore();
 }
