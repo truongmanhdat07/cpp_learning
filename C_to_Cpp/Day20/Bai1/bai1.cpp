@@ -79,7 +79,9 @@ class XeKhach : public Xe{
 
 
 void nhapDanhSachXe(Xe **danhSachXe, int soLuongXe);
-
+void inTieuDe();
+void xuatDanhSachXe(Xe **danhSachXe, int soLuongXe);
+float tinhTongChiPhiBaoDuong(Xe **danhSachXe, int soLuongXe);
 
 
 void giaiPhongBoNho(Xe **danhSachXe, int soLuongXe);
@@ -129,19 +131,25 @@ void XeKhach::nhap(){
 
 
 void Xe::xuat(){
-	cout << left << setw(12) << maXe 	<< left << setw(15) << bienSo 
-		 << left << setw(20) << hangXe  << left << setw(12) << namSX
-		 << left << setw(12) << fixed   << setprecision(2)  << giaXe;
+    cout << setw(10) << maXe 	
+         << setw(14) << bienSo 
+         << setw(14) << hangXe  
+         << setw(10) << namSX
+         << setw(16) << giaXe;
 }
 
 void XeTai::xuat(){
-	Xe::xuat();
-	cout << left << setw(12) << fixed << setprecision(2) << taiTrong << left << setw(15) << loaiThung;
+    Xe::xuat();
+    cout << setw(14) << taiTrong 
+         << setw(16) << loaiThung
+         << setw(16) << getChiPhiBaoDuong();
 }
 
 void XeKhach::xuat(){
-	Xe::xuat();
-	cout << left << setw(12) << phamVi << left << setw(12) << soGhe;
+    Xe::xuat();
+    cout << setw(14) << soGhe
+         << setw(16) << phamVi
+         << setw(16) << getChiPhiBaoDuong();
 }
 
 
@@ -153,6 +161,12 @@ int main(){
 	Xe **danhSachXe = new Xe*[soLuongXe];
 	
 	nhapDanhSachXe(danhSachXe, soLuongXe);
+	
+	cout << "\nDanh sach xe vua nhap la:\n";
+	xuatDanhSachXe(danhSachXe, soLuongXe);
+	
+	float tongChiPhiBaoDuong = tinhTongChiPhiBaoDuong(danhSachXe, soLuongXe);
+	cout << "\nTong chi phi bao duong xe la:" << tongChiPhiBaoDuong;
 	
 	
 	
@@ -188,9 +202,35 @@ void nhapDanhSachXe(Xe **danhSachXe, int soLuongXe){
 	}
 }
 
+void inTieuDe(){
+    cout << left << fixed << setprecision(2);
 
+    cout << setw(10) << "Ma xe"
+         << setw(14) << "Bien so"
+         << setw(14) << "Hang xe"
+         << setw(10) << "Nam SX"
+         << setw(16) << "Gia xe"
+         << setw(14) << "Thong so 1"
+         << setw(16) << "Thong so 2"
+         << setw(16) << "Phi bao duong" << endl;
+}
 
+void xuatDanhSachXe(Xe **danhSachXe, int soLuongXe){
+	inTieuDe();
+	for(int i=0; i<soLuongXe; i++){
+		danhSachXe[i]->xuat();
+		cout << endl;
+	}
+}
 
+float tinhTongChiPhiBaoDuong(Xe **danhSachXe, int soLuongXe){
+	float tong = 0;
+	for(int i=0; i<soLuongXe; i++){
+		tong += danhSachXe[i]->getChiPhiBaoDuong();
+	}
+	
+	return tong;
+}
 
 
 
