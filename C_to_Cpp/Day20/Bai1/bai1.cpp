@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const namHienTai = 2026;
+const int namHienTai = 2026;
 
 
 class Xe{
@@ -76,6 +76,16 @@ class XeKhach : public Xe{
 		void xuat();
 };
 
+
+
+void nhapDanhSachXe(Xe **danhSachXe, int soLuongXe);
+
+
+
+void giaiPhongBoNho(Xe **danhSachXe, int soLuongXe);
+
+
+
 float XeTai::getChiPhiBaoDuong(){
 	float chiPhi = 2000000.0 + ( taiTrong * 1500000.0 );
 	
@@ -93,8 +103,6 @@ float XeKhach::getChiPhiBaoDuong(){
 }
 
 
-
-
 void Xe::nhap(){
 	cout << "\nNhap ma xe:";		getline(cin, maXe);
 	cout << "Nhap bien so xe:";		getline(cin, bienSo);
@@ -102,7 +110,7 @@ void Xe::nhap(){
 	do{
 		cout << "Nhap nam san xuat:";	cin >> namSX;
 		if(namSX > namHienTai)	cout << "\nNam san xuat khong hop le vui long nhap lai!";
-	}while(namSx > namHienTai);
+	}while(namSX > namHienTai);
 
 	cout << "Nhap gia xe:";			cin >> giaXe;	cin.ignore();
 }
@@ -116,8 +124,9 @@ void XeTai::nhap(){
 void XeKhach::nhap(){
 	Xe::nhap();
 	cout << "Nhap pham vi:";		getline(cin, phamVi);
-	cout << "Nhap so ghe:";			cin >> soGhe;
+	cout << "Nhap so ghe:";			cin >> soGhe;		cin.ignore();
 }
+
 
 void Xe::xuat(){
 	cout << left << setw(12) << maXe 	<< left << setw(15) << bienSo 
@@ -127,7 +136,7 @@ void Xe::xuat(){
 
 void XeTai::xuat(){
 	Xe::xuat();
-	cout << left << setw(12) << fixed << setprecision(2) << trongTai << left << setw(15) << loaiThung;
+	cout << left << setw(12) << fixed << setprecision(2) << taiTrong << left << setw(15) << loaiThung;
 }
 
 void XeKhach::xuat(){
@@ -137,20 +146,59 @@ void XeKhach::xuat(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 int main(){
 	int soLuongXe;
 	cout << "Nhap so luong xe:";	cin >> soLuongXe; 	cin.ignore();
+	
+	Xe **danhSachXe = new Xe*[soLuongXe];
+	
+	nhapDanhSachXe(danhSachXe, soLuongXe);
+	
+	
+	
+	giaiPhongBoNho(danhSachXe, soLuongXe);
+	return 0;
+}
+
+
+void nhapDanhSachXe(Xe **danhSachXe, int soLuongXe){
+	for(int i=0; i<soLuongXe; i++){
+		int chon = 0;
+		cout << "\nNhap thong tin xe thu " << i+1 << ":";
+		cout << "\n1:Xe Tai";
+		cout << "\n2:Xe Khach";
+		do{
+			cout << "\nChon loai xe:";	cin >> chon;
+			cin.ignore();
+			
+			switch(chon){
+				case 1:
+					danhSachXe[i] = new XeTai();
+					break;
+				case 2:
+					danhSachXe[i] = new XeKhach();
+					break;
+				default:
+					cout << "\nLua chon khong hop le vui long chon lai!";
+					break;
+			}
+		}while(chon != 1 && chon !=2);
+		
+		danhSachXe[i]->nhap();
+	}
+}
+
+
+
+
+
+
+
+
+void giaiPhongBoNho(Xe **danhSachXe, int soLuongXe){
+	for(int i=0; i<soLuongXe; i++){
+		delete danhSachXe[i];
+	}
+	
+	delete[] danhSachXe;
 }
