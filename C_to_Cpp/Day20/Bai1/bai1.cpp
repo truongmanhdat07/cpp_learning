@@ -55,8 +55,8 @@ class XeTai : public Xe{
 		
 		float getChiPhiBaoDuong() override;
 		
-		void nhap();
-		void xuat(ostream &out);
+		void nhap() override;
+		void xuat(ostream &out) override;
 };
 
 
@@ -80,8 +80,8 @@ class XeKhach : public Xe{
 		
 		float getChiPhiBaoDuong() override;
 		
-		void nhap();
-		void xuat(ostream &out);
+		void nhap() override;
+		void xuat(ostream &out) override;
 };
 
 
@@ -201,6 +201,9 @@ int main(){
 	
 	sapXepGiamDanTheoChiPhiBaoDuong(danhSachXe, soLuongXe);
 	
+	cout << "\nDanh sach xe sau khi sap xep theo chi phi bao duong giam dan la:" << endl;
+	xuatDanhSachXe(cout, danhSachXe, soLuongXe);
+	
 	xuatDanhSachXeRaFile(danhSachXe, soLuongXe);
 	
 	giaiPhongBoNho(danhSachXe, soLuongXe);
@@ -285,7 +288,9 @@ void xuLyTimKiemXeTheoBienSo(Xe **danhSachXe, int soLuongXe){
 	
 	if(viTri != -1){
 		cout << "\nDa tim thay xe co bien so " << bienSoCanTim << ":" << endl;
+		inTieuDe(cout);
 		danhSachXe[viTri]->xuat(cout);
+		cout << endl;
 	}
 	else		cout << "\nKhong tim thay xe co bien so " << bienSoCanTim << "!";
 }
@@ -307,15 +312,15 @@ Xe** locDanhSachXeTheoNamSX(Xe **danhSachXe, int soLuongXe, int namSXCanLoc, int
 void xuLyDanhSachXeTheoNamSX(Xe **danhSachXe, int soLuongXe){
 	int soLuongDaLoc;
 	int namSXCanLoc;
-	cout << "\nNhap nam san xuat can loc danh sach:";	cin >> namSXCanLoc;
+	cout << "\nNhap nam san xuat can loc danh sach:";	cin >> namSXCanLoc;	cin.ignore();
 	
 	Xe** danhSachXeDaLoc = locDanhSachXeTheoNamSX(danhSachXe, soLuongXe, namSXCanLoc, soLuongDaLoc);
 	
 	if(soLuongDaLoc !=0){
-		cout << "\nDanh sach xe san xuat sau nam " << namSXCanLoc << " la:" << endl;
+		cout << "\nDanh sach xe san xuat tu nam " << namSXCanLoc << " la:" << endl;
 		xuatDanhSachXe(cout, danhSachXeDaLoc, soLuongDaLoc);
 	}
-	else	cout << "\nKhong co xe nao san xuat sau nam " << namSXCanLoc << "!";
+	else	cout << "\nKhong co xe nao san xuat tu nam " << namSXCanLoc << "!";
 	
 	
 	delete[] danhSachXeDaLoc;
@@ -347,7 +352,7 @@ void sapXepGiamDanTheoChiPhiBaoDuong(Xe** danhSachXe, int soLuongXe){
 
 void xuatDanhSachXeRaFile(Xe **danhSachXe, int soLuongXe){
 	string tenFileOutput;
-	cout << "\nNhap ten file output:";	cin.ignore();	getline(cin, tenFileOutput);
+	cout << "\nNhap ten file output:";	getline(cin, tenFileOutput);
 	
 	ofstream fileOut(tenFileOutput);
 	if(!fileOut){
@@ -355,7 +360,7 @@ void xuatDanhSachXeRaFile(Xe **danhSachXe, int soLuongXe){
 		return;
 	}
 	
-	fileOut << "\nDanh sach xe sau khi sap xe la:" << endl;
+	fileOut << "\nDanh sach xe sau khi sap xep la:" << endl;
 	xuatDanhSachXe(fileOut, danhSachXe, soLuongXe);
 	
 	cout << "\nXuat thanh cong danh sach xe vao file " << tenFileOutput;
