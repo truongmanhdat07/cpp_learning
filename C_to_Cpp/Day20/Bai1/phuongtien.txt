@@ -1,0 +1,11 @@
+
+Danh sach xe sau khi sap xep la:
+Ma xe     Bien so       Hang xe       Nam SX    Gia xe          Thong so 1    Thong so 2      Phi bao duong   
+T03       29C-55555     Hino          2024      1200000000.00   15.00         thung bat       24500000.00     
+T02       29C-33333     Isuzu         2018      450000000.00    5.00          thung kin       9500000.00      
+T01       29C-11111     Huyndai       2020      500000000.00    3.50          dong lanh       8700000.00      
+K02       29B-44444     Thaco         2023      1500000000.00   45            du lich         6500000.00      
+T04       29C-77777     Huyndai       2021      500000000.00    2.50          thung kin       5750000.00      
+K03       29B-66666     Toyota        2019      700000000.00    29            noi tinh        4900000.00      
+K01       29B-22222     Ford          2022      800000000.00    16            lien tinh       4140000.00      
+K04       29B-88888     Mercedes      2020      950000000.00    16            lien tinh       4140000.00      
