@@ -26,6 +26,8 @@ class Xe{
 		virtual ~Xe(){};
 		
 		virtual float getChiPhiBaoDuong() = 0;
+		string getBienSo();
+		int getNamSX();
 		
 		virtual void nhap();
 		virtual void xuat();
@@ -82,6 +84,10 @@ void nhapDanhSachXe(Xe **danhSachXe, int soLuongXe);
 void inTieuDe();
 void xuatDanhSachXe(Xe **danhSachXe, int soLuongXe);
 float tinhTongChiPhiBaoDuong(Xe **danhSachXe, int soLuongXe);
+int timXeTheoBienSo(Xe **danhSachXe, int soLuongXe, string bienSoXeCanTim);
+void xuLyTimKiemXeTheoBienSo(Xe **danhSachXe, int soLuongXe);
+Xe** locDanhSachXeTheoNamSX(Xe **danhSachXe, int soLuongXe, int namSXCanLoc, int &soLuongDaLoc);
+void xuLyDanhSachXeTheoNamSX(Xe **danhSachXe, int soLuongXe);
 
 
 void giaiPhongBoNho(Xe **danhSachXe, int soLuongXe);
@@ -104,6 +110,13 @@ float XeKhach::getChiPhiBaoDuong(){
 	return chiPhi;
 }
 
+string Xe::getBienSo(){
+	return bienSo;
+}
+
+int Xe::getNamSX(){
+	return namSX;
+}
 
 void Xe::nhap(){
 	cout << "\nNhap ma xe:";		getline(cin, maXe);
@@ -168,6 +181,10 @@ int main(){
 	float tongChiPhiBaoDuong = tinhTongChiPhiBaoDuong(danhSachXe, soLuongXe);
 	cout << "\nTong chi phi bao duong xe la:" << tongChiPhiBaoDuong;
 	
+	xuLyTimKiemXeTheoBienSo(danhSachXe, soLuongXe);
+	
+	xuLyDanhSachXeTheoNamSX(danhSachXe, soLuongXe);
+	
 	
 	
 	giaiPhongBoNho(danhSachXe, soLuongXe);
@@ -231,6 +248,68 @@ float tinhTongChiPhiBaoDuong(Xe **danhSachXe, int soLuongXe){
 	
 	return tong;
 }
+
+int timXeTheoBienSo(Xe **danhSachXe, int soLuongXe, string bienSoXeCanTim){
+	
+	for(int i=0; i<soLuongXe; i++){
+		if(danhSachXe[i]->getBienSo() == bienSoXeCanTim)	return i;
+	}
+	
+	return -1;
+}
+
+void xuLyTimKiemXeTheoBienSo(Xe **danhSachXe, int soLuongXe){
+	string bienSoCanTim;
+	cout << "\nNhap bien so xe can tim:";	getline(cin, bienSoCanTim);
+	int viTri = timXeTheoBienSo(danhSachXe, soLuongXe, bienSoCanTim);
+	
+	if(viTri != -1){
+		cout << "\nDa tim thay xe co bien so " << bienSoCanTim << ":" << endl;
+		danhSachXe[viTri]->xuat();
+	}
+	else		cout << "\nKhong tim thay xe co bien so " << bienSoCanTim << "!";
+}
+
+Xe** locDanhSachXeTheoNamSX(Xe **danhSachXe, int soLuongXe, int namSXCanLoc, int &soLuongDaLoc){
+	Xe** danhSachXeDaLoc = new Xe*[soLuongXe];
+	soLuongDaLoc = 0;
+	
+	for(int i=0; i<soLuongXe; i++){
+		if(danhSachXe[i]->getNamSX() >=	namSXCanLoc){
+			danhSachXeDaLoc[soLuongDaLoc] = danhSachXe[i];
+			soLuongDaLoc++;
+		}
+	}
+	
+	return danhSachXeDaLoc;
+}
+
+void xuLyDanhSachXeTheoNamSX(Xe **danhSachXe, int soLuongXe){
+	int soLuongDaLoc;
+	int namSXCanLoc;
+	cout << "\nNhap nam san xuat can loc danh sach:";	cin >> namSXCanLoc;
+	
+	Xe** danhSachXeDaLoc = locDanhSachXeTheoNamSX(danhSachXe, soLuongXe, namSXCanLoc, soLuongDaLoc);
+	
+	if(soLuongDaLoc !=0){
+		cout << "\nDanh sach xe san xuat sau nam " << namSXCanLoc << " la:" << endl;
+		xuatDanhSachXe(danhSachXeDaLoc, soLuongDaLoc);
+	}
+	else	cout << "\nKhong co xe nao san xuat sau nam " << namSXCanLoc << "!";
+	
+	
+	delete[] danhSachXeDaLoc;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
