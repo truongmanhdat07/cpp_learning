@@ -16,6 +16,7 @@ class Xe{
 		float giaXe;
 	public:
 		Xe() : maXe(""), bienSo(""), hangXe(""), namSX(0), giaXe(0.0) {};
+		
 		Xe(string maXe, string bienSo, string hangXe, int namSX, float giaXe){
 			this->maXe = maXe;
 			this->bienSo = bienSo;
@@ -23,6 +24,7 @@ class Xe{
 			this->namSX = namSX;
 			this->giaXe = giaXe;
 		};
+		
 		virtual ~Xe(){};
 		
 		virtual float getChiPhiBaoDuong() = 0;
@@ -30,7 +32,7 @@ class Xe{
 		int getNamSX();
 		
 		virtual void nhap();
-		virtual void xuat();
+		virtual void xuat(ostream &out);
 };
 
 
@@ -40,6 +42,7 @@ class XeTai : public Xe{
 		string loaiThung = "";
 	public:
 		XeTai() : Xe(), taiTrong(0.0), loaiThung(""){};
+		
 		XeTai(string maXe, string bienSo, string hangXe, int namSX, float giaXe, 
           	float taiTrong, string loaiThung) 
 			: Xe(maXe, bienSo, hangXe, namSX, giaXe) {
@@ -47,12 +50,13 @@ class XeTai : public Xe{
           	this->taiTrong = taiTrong;
        	 	this->loaiThung = loaiThung; 	 
 		}
+		
 		~XeTai() override{};
 		
 		float getChiPhiBaoDuong() override;
 		
 		void nhap();
-		void xuat();
+		void xuat(ostream &out);
 };
 
 
@@ -63,6 +67,7 @@ class XeKhach : public Xe{
 		string phamVi = "";
 	public:
 		XeKhach() : Xe(), soGhe(0), phamVi(""){};
+		
 		XeKhach(string maXe, string bienSo, string hangXe, int namSX, float giaXe,
 				int soGhe, string phamVi) 
 				: Xe(maXe, bienSo, hangXe, namSX, giaXe) {
@@ -70,30 +75,36 @@ class XeKhach : public Xe{
 				this->soGhe = soGhe;
 				this->phamVi = phamVi;
 				}
+				
 		~XeKhach() override{};
 		
 		float getChiPhiBaoDuong() override;
 		
 		void nhap();
-		void xuat();
+		void xuat(ostream &out);
 };
 
 
 
 void nhapDanhSachXe(Xe **danhSachXe, int soLuongXe);
-void inTieuDe();
-void xuatDanhSachXe(Xe **danhSachXe, int soLuongXe);
+
+void inTieuDe(ostream &out);
+void xuatDanhSachXe(ostream &out, Xe **danhSachXe, int soLuongXe);
+
 float tinhTongChiPhiBaoDuong(Xe **danhSachXe, int soLuongXe);
+
 int timXeTheoBienSo(Xe **danhSachXe, int soLuongXe, string bienSoXeCanTim);
 void xuLyTimKiemXeTheoBienSo(Xe **danhSachXe, int soLuongXe);
+
 Xe** locDanhSachXeTheoNamSX(Xe **danhSachXe, int soLuongXe, int namSXCanLoc, int &soLuongDaLoc);
 void xuLyDanhSachXeTheoNamSX(Xe **danhSachXe, int soLuongXe);
+
 void doiCho(Xe* &a, Xe* &b);
 void sapXepGiamDanTheoChiPhiBaoDuong(Xe **danhSachXe, int soLuongXe);
 
+void xuatDanhSachXeRaFile(Xe **danhSachXe, int soLuongXe);
 
 void giaiPhongBoNho(Xe **danhSachXe, int soLuongXe);
-
 
 
 float XeTai::getChiPhiBaoDuong(){
@@ -124,6 +135,7 @@ void Xe::nhap(){
 	cout << "\nNhap ma xe:";		getline(cin, maXe);
 	cout << "Nhap bien so xe:";		getline(cin, bienSo);
 	cout << "Nhap hang xe:";		getline(cin, hangXe);
+	
 	do{
 		cout << "Nhap nam san xuat:";	cin >> namSX;
 		if(namSX > namHienTai)	cout << "\nNam san xuat khong hop le vui long nhap lai!";
@@ -145,26 +157,26 @@ void XeKhach::nhap(){
 }
 
 
-void Xe::xuat(){
-    cout << setw(10) << maXe 	
-         << setw(14) << bienSo 
-         << setw(14) << hangXe  
-         << setw(10) << namSX
-         << setw(16) << giaXe;
+void Xe::xuat(ostream &out){
+    out << setw(10) << maXe 	
+        << setw(14) << bienSo 
+        << setw(14) << hangXe  
+        << setw(10) << namSX
+        << setw(16) << giaXe;
 }
 
-void XeTai::xuat(){
-    Xe::xuat();
-    cout << setw(14) << taiTrong 
-         << setw(16) << loaiThung
-         << setw(16) << getChiPhiBaoDuong();
+void XeTai::xuat(ostream &out){
+    Xe::xuat(out);
+    out << setw(14) << taiTrong 
+        << setw(16) << loaiThung
+        << setw(16) << getChiPhiBaoDuong();
 }
 
-void XeKhach::xuat(){
-    Xe::xuat();
-    cout << setw(14) << soGhe
-         << setw(16) << phamVi
-         << setw(16) << getChiPhiBaoDuong();
+void XeKhach::xuat(ostream &out){
+    Xe::xuat(out);
+    out << setw(14) << soGhe
+        << setw(16) << phamVi
+        << setw(16) << getChiPhiBaoDuong();
 }
 
 
@@ -177,8 +189,8 @@ int main(){
 	
 	nhapDanhSachXe(danhSachXe, soLuongXe);
 	
-	cout << "\nDanh sach xe vua nhap la:\n";
-	xuatDanhSachXe(danhSachXe, soLuongXe);
+	cout << "\nDanh sach xe vua nhap la:" << endl;
+	xuatDanhSachXe(cout, danhSachXe, soLuongXe);
 	
 	float tongChiPhiBaoDuong = tinhTongChiPhiBaoDuong(danhSachXe, soLuongXe);
 	cout << "\nTong chi phi bao duong xe la:" << tongChiPhiBaoDuong;
@@ -189,8 +201,10 @@ int main(){
 	
 	sapXepGiamDanTheoChiPhiBaoDuong(danhSachXe, soLuongXe);
 	
+	xuatDanhSachXeRaFile(danhSachXe, soLuongXe);
 	
 	giaiPhongBoNho(danhSachXe, soLuongXe);
+	
 	return 0;
 }
 
@@ -201,6 +215,7 @@ void nhapDanhSachXe(Xe **danhSachXe, int soLuongXe){
 		cout << "\nNhap thong tin xe thu " << i+1 << ":";
 		cout << "\n1:Xe Tai";
 		cout << "\n2:Xe Khach";
+		
 		do{
 			cout << "\nChon loai xe:";	cin >> chon;
 			cin.ignore();
@@ -222,10 +237,10 @@ void nhapDanhSachXe(Xe **danhSachXe, int soLuongXe){
 	}
 }
 
-void inTieuDe(){
-    cout << left << fixed << setprecision(2);
+void inTieuDe(ostream &out){
+    out << left << fixed << setprecision(2);
 
-    cout << setw(10) << "Ma xe"
+    out << setw(10) << "Ma xe"
          << setw(14) << "Bien so"
          << setw(14) << "Hang xe"
          << setw(10) << "Nam SX"
@@ -235,16 +250,18 @@ void inTieuDe(){
          << setw(16) << "Phi bao duong" << endl;
 }
 
-void xuatDanhSachXe(Xe **danhSachXe, int soLuongXe){
-	inTieuDe();
+void xuatDanhSachXe(ostream &out, Xe **danhSachXe, int soLuongXe){
+	inTieuDe(out);
+	
 	for(int i=0; i<soLuongXe; i++){
-		danhSachXe[i]->xuat();
-		cout << endl;
+		danhSachXe[i]->xuat(out);
+		out << endl;
 	}
 }
 
 float tinhTongChiPhiBaoDuong(Xe **danhSachXe, int soLuongXe){
 	float tong = 0;
+	
 	for(int i=0; i<soLuongXe; i++){
 		tong += danhSachXe[i]->getChiPhiBaoDuong();
 	}
@@ -253,7 +270,6 @@ float tinhTongChiPhiBaoDuong(Xe **danhSachXe, int soLuongXe){
 }
 
 int timXeTheoBienSo(Xe **danhSachXe, int soLuongXe, string bienSoXeCanTim){
-	
 	for(int i=0; i<soLuongXe; i++){
 		if(danhSachXe[i]->getBienSo() == bienSoXeCanTim)	return i;
 	}
@@ -264,11 +280,12 @@ int timXeTheoBienSo(Xe **danhSachXe, int soLuongXe, string bienSoXeCanTim){
 void xuLyTimKiemXeTheoBienSo(Xe **danhSachXe, int soLuongXe){
 	string bienSoCanTim;
 	cout << "\nNhap bien so xe can tim:";	getline(cin, bienSoCanTim);
+	
 	int viTri = timXeTheoBienSo(danhSachXe, soLuongXe, bienSoCanTim);
 	
 	if(viTri != -1){
 		cout << "\nDa tim thay xe co bien so " << bienSoCanTim << ":" << endl;
-		danhSachXe[viTri]->xuat();
+		danhSachXe[viTri]->xuat(cout);
 	}
 	else		cout << "\nKhong tim thay xe co bien so " << bienSoCanTim << "!";
 }
@@ -296,7 +313,7 @@ void xuLyDanhSachXeTheoNamSX(Xe **danhSachXe, int soLuongXe){
 	
 	if(soLuongDaLoc !=0){
 		cout << "\nDanh sach xe san xuat sau nam " << namSXCanLoc << " la:" << endl;
-		xuatDanhSachXe(danhSachXeDaLoc, soLuongDaLoc);
+		xuatDanhSachXe(cout, danhSachXeDaLoc, soLuongDaLoc);
 	}
 	else	cout << "\nKhong co xe nao san xuat sau nam " << namSXCanLoc << "!";
 	
@@ -313,10 +330,13 @@ void doiCho(Xe* &a, Xe* &b){
 void sapXepGiamDanTheoChiPhiBaoDuong(Xe** danhSachXe, int soLuongXe){
 	for(int i=0; i<soLuongXe-1; i++){
 		for(int j=i+1; j<soLuongXe; j++){
+			
 			if(danhSachXe[i]->getChiPhiBaoDuong() < danhSachXe[j]->getChiPhiBaoDuong()){
 				doiCho(danhSachXe[i], danhSachXe[j]);
 			}
+			
 			else if(danhSachXe[i]->getChiPhiBaoDuong() == danhSachXe[j]->getChiPhiBaoDuong()){
+				
 				if(danhSachXe[i]->getNamSX() < danhSachXe[j]->getNamSX()){
 					doiCho(danhSachXe[i], danhSachXe[j]);
 				}
@@ -325,14 +345,21 @@ void sapXepGiamDanTheoChiPhiBaoDuong(Xe** danhSachXe, int soLuongXe){
 	}
 }
 
-
-
-
-
-
-
-
-
+void xuatDanhSachXeRaFile(Xe **danhSachXe, int soLuongXe){
+	string tenFileOutput;
+	cout << "\nNhap ten file output:";	cin.ignore();	getline(cin, tenFileOutput);
+	
+	ofstream fileOut(tenFileOutput);
+	if(!fileOut){
+		cerr << "\nKhong the mo file " << tenFileOutput;
+		return;
+	}
+	
+	fileOut << "\nDanh sach xe sau khi sap xe la:" << endl;
+	xuatDanhSachXe(fileOut, danhSachXe, soLuongXe);
+	
+	cout << "\nXuat thanh cong danh sach xe vao file " << tenFileOutput;
+}
 
 void giaiPhongBoNho(Xe **danhSachXe, int soLuongXe){
 	for(int i=0; i<soLuongXe; i++){
