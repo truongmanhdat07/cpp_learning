@@ -88,6 +88,8 @@ int timXeTheoBienSo(Xe **danhSachXe, int soLuongXe, string bienSoXeCanTim);
 void xuLyTimKiemXeTheoBienSo(Xe **danhSachXe, int soLuongXe);
 Xe** locDanhSachXeTheoNamSX(Xe **danhSachXe, int soLuongXe, int namSXCanLoc, int &soLuongDaLoc);
 void xuLyDanhSachXeTheoNamSX(Xe **danhSachXe, int soLuongXe);
+void doiCho(Xe* &a, Xe* &b);
+void sapXepGiamDanTheoChiPhiBaoDuong(Xe **danhSachXe, int soLuongXe);
 
 
 void giaiPhongBoNho(Xe **danhSachXe, int soLuongXe);
@@ -185,6 +187,7 @@ int main(){
 	
 	xuLyDanhSachXeTheoNamSX(danhSachXe, soLuongXe);
 	
+	sapXepGiamDanTheoChiPhiBaoDuong(danhSachXe, soLuongXe);
 	
 	
 	giaiPhongBoNho(danhSachXe, soLuongXe);
@@ -301,9 +304,26 @@ void xuLyDanhSachXeTheoNamSX(Xe **danhSachXe, int soLuongXe){
 	delete[] danhSachXeDaLoc;
 }
 
+void doiCho(Xe* &a, Xe* &b){
+	Xe* temp = a;
+	a = b;
+	b = temp;
+}
 
-
-
+void sapXepGiamDanTheoChiPhiBaoDuong(Xe** danhSachXe, int soLuongXe){
+	for(int i=0; i<soLuongXe-1; i++){
+		for(int j=i+1; j<soLuongXe; j++){
+			if(danhSachXe[i]->getChiPhiBaoDuong() < danhSachXe[j]->getChiPhiBaoDuong()){
+				doiCho(danhSachXe[i], danhSachXe[j]);
+			}
+			else if(danhSachXe[i]->getChiPhiBaoDuong() == danhSachXe[j]->getChiPhiBaoDuong()){
+				if(danhSachXe[i]->getNamSX() < danhSachXe[j]->getNamSX()){
+					doiCho(danhSachXe[i], danhSachXe[j]);
+				}
+			}
+		}
+	}
+}
 
 
 
