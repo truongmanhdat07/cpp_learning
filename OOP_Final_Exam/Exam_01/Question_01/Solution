@@ -1,0 +1,108 @@
+#include<iostream>
+#include<fstream>
+#include<iomanip>
+#include<vector>
+
+using namespace std;
+
+
+class NhanVien{
+	protected:
+		string maNhanVien;
+		string hoTen;
+		int namSinh;
+		float luongCoBan;
+		int soNgayCong;
+	public:
+		NhanVien() : maNhanVien(""), hoTen(""), namSinh(0), luongCoBan(0.0), soNgayCong(0){};
+		
+		NhanVien(string maNhanVien, string hoTen, int namSinh, float luongCoBan, int soNgayCong);
+		
+		virtual ~NhanVien(){};
+		
+		
+};
+
+
+class LapTrinhVien : public NhanVien{
+	private:
+		string capBac;
+		float gioLamThem;
+	public:
+		LapTrinhVien() : NhanVien(), capBac("") , gioLamThem(0.0){};
+		
+		LapTrinhVien(string maNhanVien, string hoTen, int namSinh, float luongCoBan,
+					 int soNgayCong, string capBac, float gioLamThem);
+					 
+		~LapTrinhVien() override{};
+};
+
+
+class KiemThuVien : public NhanVien{
+	private:
+		int soLoiPhatHien;
+		string loaiKiemThu;
+	public:
+		KiemThuVien() : NhanVien(), loaiKiemThu(""), soLoiPhatHien(0){};
+		
+		KiemThuVien(string maNhanVien, string hoTen, int namSinh, float luongCoBan,
+					 int soNgayCong, string loaiKiemThu, int soLoiPhatHien);
+};
+
+
+
+
+
+
+
+NhanVien::NhanVien(string maNhanVien, string hoTen, int namSinh, float luongCoBan, int soNgayCong){
+	this->maNhanVien = maNhanVien;
+	this->hoTen = hoTen;
+	this->namSinh = namSinh;
+	this->luongCoBan = luongCoBan;
+	this->soNgayCong = soNgayCong;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LapTrinhVien::LapTrinhVien(string maNhanVien, string hoTen, int namSinh, float luongCoBan,
+					 int soNgayCong, string capBac, float gioLamThem){
+	this->maNhanVien = maNhanVien;
+	this->hoTen = hoTen;
+	this->namSinh = namSinh;
+	this->luongCoBan = luongCoBan;
+	this->soNgayCong = soNgayCong;				 	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+KiemThuVien::KiemThuVien(string maNhanVien, string hoTen, int namSinh, float luongCoBan,
+					 int soNgayCong, string loaiKiemThu, int soLoiPhatHien){
+	this->maNhanVien = maNhanVien;
+	this->hoTen = hoTen;
+	this->namSinh = namSinh;
+	this->luongCoBan = luongCoBan;
+	this->soNgayCong = soNgayCong;
+	this->loaiKiemThu = loaiKiemThu;
+	this->soLoiPhatHien = soLoiPhatHien;				 	
+}
