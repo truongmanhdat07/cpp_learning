@@ -23,7 +23,7 @@ class NhanVien{
 		virtual float getLuongThucTe() = 0;
 		
 		virtual void nhap();
-		//virtual void xuat(ostream &out);
+		virtual void xuat(ostream &out);
 		
 };
 
@@ -43,7 +43,7 @@ class LapTrinhVien : public NhanVien{
 		float getLuongThucTe() override;
 		
 		void nhap() override;
-		//void xuat(ostream &out) override;
+		void xuat(ostream &out) override;
 		
 };
 
@@ -62,13 +62,14 @@ class KiemThuVien : public NhanVien{
 		float getLuongThucTe() override;
 		
 		void nhap() override;
-		//void xuat(ostream &out) override;
+		void xuat(ostream &out) override;
 					 
 };
 
 
 void nhapDanhSachNhanVien(vector<NhanVien*> &danhSachNhanVien, int soLuongNhanVien);
-
+void inTieuDe(ostream &out);
+void xuatDanhSachNhanVien(ostream &out, const vector<NhanVien*> &danhSachNhanVien);
 
 
 
@@ -85,12 +86,27 @@ NhanVien::NhanVien(string maNhanVien, string hoTen, int namSinh, float luongCoBa
 void NhanVien::nhap(){
 	cout << "Nhap ma nhan vien:";		getline(cin, maNhanVien);
 	cout << "Nhap ho ten:";				getline(cin, hoTen);
-	cout << "Nhap nam sinh:";			cin >> namSinh;
+	do{
+		cout << "Nhap nam sinh:";			cin >> namSinh;
+		if(namSinh > 2026)	cout << "\nNam sinh khong hop le, vui long nhap lai!" << endl;
+	}while(namSinh > 2026);
+	
 	cout << "Nhap luong co ban:";		cin >> luongCoBan;
-	cout << "Nhap so ngay cong:";		cin >> soNgayCong;	cin.ignore();
+	do{
+		cout << "Nhap so ngay cong:";		cin >> soNgayCong;	cin.ignore();
+		if(soNgayCong < 0 || soNgayCong > 31)	cout << "\nSo ngay cong khong hop le, vui long nhap lai!" << endl; 
+	}while(soNgayCong < 0 || soNgayCong > 31);
+
 }
 
-
+void NhanVien::xuat(ostream &out){
+	 out << left
+	 	 << setw(10) << maNhanVien
+		 << setw(20) << hoTen
+		 << setw(12) << namSinh
+		 << setw(18) << fixed << setprecision(0) << luongCoBan
+		 << setw(15) << soNgayCong;
+}
 
 
 
@@ -123,7 +139,13 @@ void LapTrinhVien::nhap(){
 	cout << "Nhap so gio lam them:";	cin >> gioLamThem;	cin.ignore();
 }
 
-
+void LapTrinhVien::xuat(ostream &out){
+	NhanVien::xuat(out);
+	 out << left
+	 	 << setw(18) << capBac
+		 << setw(18) << fixed << setprecision(1) << gioLamThem
+		 << setw(18) << fixed << setprecision(0) << getLuongThucTe();
+}
 
 
 
@@ -152,7 +174,13 @@ void KiemThuVien::nhap(){
 	cout << "Nhap so loi phat hien:";	cin >> soLoiPhatHien;	cin.ignore();
 }
 
-
+void KiemThuVien::xuat(ostream &out){
+	NhanVien::xuat(out);
+	out  << left
+		 << setw(18) << loaiKiemThu
+		 << setw(18) << soLoiPhatHien
+		 << setw(18) << fixed << setprecision(0) << getLuongThucTe();
+}
 
 
 
@@ -182,6 +210,9 @@ int main(){
 	
 	nhapDanhSachNhanVien(danhSachNhanVien, soLuongNhanVien);
 	
+	cout << "\nDanh sach nhan vien vua nhap la:\n";
+	xuatDanhSachNhanVien(cout, danhSachNhanVien);
+	
 	return 0;
 }
 
@@ -202,5 +233,26 @@ void nhapDanhSachNhanVien(vector<NhanVien*> &danhSachNhanVien, int soLuongNhanVi
 		
 		nv->nhap();
 		danhSachNhanVien.push_back(nv);
+	}
+}
+
+void inTieuDe(ostream &out){
+	out  << left
+		 << setw(10)  << "Ma NV"
+		 << setw(20) << "Ho Va Ten"
+		 << setw(12) << "Nam Sinh"
+		 << setw(18) << "Luong Co Ban"
+		 << setw(15) << "Ngay Cong"
+		 << setw(18) << "Thong So 1"
+		 << setw(18) << "Thong So 2" 
+		 << setw(18) << "Luong Thuc Te" << endl;
+}
+
+void xuatDanhSachNhanVien(ostream &out, const vector<NhanVien*> &danhSachNhanVien){
+	inTieuDe(out);
+	
+	for(int i=0; i<danhSachNhanVien.size(); i++){
+		danhSachNhanVien[i]->xuat(out);
+		out << endl;
 	}
 }
