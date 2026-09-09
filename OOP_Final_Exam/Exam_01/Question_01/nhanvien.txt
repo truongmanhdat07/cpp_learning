@@ -1,0 +1,8 @@
+
+Danh sach nhan vien sap xep theo luong giam dan la:
+Ma NV     Ho Va Ten           Nam Sinh    Luong Co Ban      Ngay Cong      Thong So 1        Thong So 2        Luong Thuc Te     
+NV01      Nguyen Van A        2000        22000000          22             senior            10.0              29400000          
+NV02      Tran Thi B          1998        22000000          22             junior            0.0               22000000          
+NV03      Le Van C            2003        22000000          22             manual            0                 22000000          
+NV04      Pham Thi D          2004        11000000          22             automation        20                13800000          
+NV05      Hoang Van E         2005        8800000           20             junior            0.0               8000000           
