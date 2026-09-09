@@ -1,0 +1,41 @@
+5
+1
+NV01
+Nguyen Van A
+2000
+22000000
+22
+senior
+10
+1
+NV02
+Tran Thi B
+1998
+22000000
+22
+junior
+0
+2
+NV03
+Le Van C
+2003
+22000000
+22
+manual
+0
+2
+NV04
+Pham Thi D
+2004
+11000000
+22
+automation
+20
+1
+NV05
+Hoang Van E
+2005
+8800000
+20
+junior
+0
