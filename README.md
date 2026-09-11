@@ -24,15 +24,6 @@ This section documents my transition from the C programming language to modern C
 - Basic file organization
 
 
-## 📂 Structure
-
-```text
-01_C_to_CPP/
-├── README.md
-├── Day01/
-├── Day02/
-└── ...
-```
 
 ## 💻 Practice
 
