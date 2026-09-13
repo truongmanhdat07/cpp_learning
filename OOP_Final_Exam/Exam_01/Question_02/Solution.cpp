@@ -36,8 +36,8 @@ class ThoiVu : public NhanVien{
 
 class ChinhThuc : public NhanVien{
 	private:
-		float heSoLuong;
 		int thamNien;
+		float heSoLuong;
 	public:
 		ChinhThuc() : NhanVien("", "", 2), heSoLuong(0.0f), thamNien(0){}
 		ChinhThuc(string maNV, string hoTen, int loaiHopDong,float heSoLuong, int thamNien);
@@ -50,6 +50,10 @@ class ChinhThuc : public NhanVien{
 
 
 void nhapDanhSachNhanVien(vector<NhanVien*> &danhSachNhanVien, int soLuongNhanVien);
+void inTieuDe(ostream &out);
+void xuatDanhSachNhanVien(ostream &out, const vector<NhanVien*> &danhSachNhanVien);
+double thongKeLuong(const vector<NhanVien*> &danhSachNhanVien);
+
 
 
 
@@ -67,7 +71,7 @@ void NhanVien::nhap(){
 
 void NhanVien::xuat(ostream &out){
 	out << left << fixed << setprecision(0)
-		<< setw(12) << maNV
+		<< setw(15) << maNV
 		<< setw(25) << hoTen
 		<< setw(12) << loaiHopDong;
 }
@@ -142,8 +146,8 @@ void ChinhThuc::nhap(){
 void ChinhThuc::xuat(ostream &out){
 	NhanVien::xuat(out);
 	out << setw(12) << thamNien
-		<< setw(12) << heSoLuong
-		<< setw(15) << getLuong() << endl;
+		<< setw(12) << fixed << setprecision(2) << heSoLuong
+		<< setw(15) << fixed << setprecision(0) << getLuong() << endl;
 }
 
 
@@ -166,8 +170,10 @@ int main(){
 	
 	nhapDanhSachNhanVien(danhSachNhanVien, soLuongNhanVien);
 	
+	cout << "\nDanh sach nhan vien vua nhap la:" << endl;
+	xuatDanhSachNhanVien(cout, danhSachNhanVien);
 	
-	
+	cout << "\nTong luong ma cong ty TOTO phai tra cho nhan vien trong 1 thang la:" << thongKeLuong(danhSachNhanVien);
 	
 	return 0;
 }
@@ -176,9 +182,11 @@ void nhapDanhSachNhanVien(vector<NhanVien*> &danhSachNhanVien, int soLuongNhanVi
 	for(int i=0; i<soLuongNhanVien; i++){
 		int chon ;
 		
+		cout << "\nNhap thong tin cho nhan vien thu " << i+1 << ":";
+				
 		do{
 			cout << "\nNhap loai hop dong ( 1 = thoi vu, 2 = chinh thuc ) :";
-			cin >> chon;	
+			cin >> chon;	cin.ignore();
 			if(chon != 1 && chon != 2)	cout << "\nLua chon khong hop le, vui long chon lai!";
 		}while(chon != 1 && chon != 2);
 
@@ -190,4 +198,31 @@ void nhapDanhSachNhanVien(vector<NhanVien*> &danhSachNhanVien, int soLuongNhanVi
 		nv->nhap();
 		danhSachNhanVien.push_back(nv);
 	}
+}
+
+void inTieuDe(ostream &out){
+	out << left
+		<< setw(15) << "Ma Nhan Vien"
+		<< setw(25) << "Ho Va Ten"
+		<< setw(12) << "Hop Dong"
+		<< setw(12) << "Thong So 1"
+		<< setw(12) << "Thong So 2"
+		<< setw(15) << "Luong" << endl;
+}
+
+void xuatDanhSachNhanVien(ostream &out, const vector<NhanVien*> &danhSachNhanVien){
+	inTieuDe(out);
+	for(int i=0; i<danhSachNhanVien.size(); i++){
+		danhSachNhanVien[i]->xuat(out);
+	}
+}
+
+double thongKeLuong(const vector<NhanVien*> &danhSachNhanVien){
+	double tong = 0;
+	
+	for(int i=0; i<danhSachNhanVien.size(); i++){
+		tong += danhSachNhanVien[i]->getLuong();
+	}
+	
+	return tong;
 }
