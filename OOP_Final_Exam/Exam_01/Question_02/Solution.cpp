@@ -17,6 +17,7 @@ class NhanVien{
 		
 		virtual double getLuong() = 0;
 		string getMa();
+		string getHoTen();
 		
 		virtual void nhap();
 		virtual void xuat(ostream &out);
@@ -59,8 +60,9 @@ int timKiemTheoMa(const vector<NhanVien*> &danhSachNhanVien, const string maCanT
 void timKiemNhanVienTheoMa(const vector<NhanVien*> &danhSachNhanVien);
 vector<NhanVien*> locDanhSach(const vector<NhanVien*> &danhSachNhanVien, double luong);
 void xuLyLocDanhSachTheoLuong(const vector<NhanVien*> &danhSachNhanVien);
-
-
+void sapXepGiamDanTheoLuong(vector<NhanVien*> &danhSachNhanVien);
+void xuatDanhSachRaFile(const vector<NhanVien*> &danhSachNhanVien, string tenFileOutput);
+void giaiPhongBoNho(vector<NhanVien*> &danhSachNhanVien);
 
 
 
@@ -79,14 +81,16 @@ void NhanVien::xuat(ostream &out){
 	out << left << fixed << setprecision(0)
 		<< setw(15) << maNV
 		<< setw(25) << hoTen
-		<< setw(12) << loaiHopDong;
+		<< setw(12) << (loaiHopDong == 1 ? "thoi vu" : "chinh thuc");
 }
 
 string NhanVien::getMa(){
 	return maNV;
 }
 
-
+string NhanVien::getHoTen(){
+	return hoTen;
+}
 
 
 ThoiVu::ThoiVu(string maNV, string hoTen, int loaiHopDong, int soNgayCong, double donGia) 
@@ -123,7 +127,6 @@ void ThoiVu::xuat(ostream &out){
 }
 
 
-
 ChinhThuc::ChinhThuc(string maNV, string hoTen, int loaiHopDong, float heSoLuong, int thamNien) 
 		  :NhanVien(maNV, hoTen, loaiHopDong){
 		  	
@@ -142,7 +145,11 @@ double ChinhThuc::getLuong(){
 void ChinhThuc::nhap(){
 	NhanVien::nhap();
 	
-	cout << "Nhap he so luong:";	cin >> heSoLuong;
+	do{
+		cout << "Nhap he so luong:";	cin >> heSoLuong;
+		if(heSoLuong <= 0)	cout << "\nHe so luong khong hop le, vui long nhap lai!";
+	}while(heSoLuong <= 0);
+
 	do{
 		cout << "Nhap tham nien:";	cin >> thamNien;
 		if(thamNien < 0)	cout << "\nTham nien khong hop le, vui long nhap lai!";
@@ -157,15 +164,6 @@ void ChinhThuc::xuat(ostream &out){
 		<< setw(12) << fixed << setprecision(2) << heSoLuong
 		<< setw(15) << fixed << setprecision(0) << getLuong() << endl;
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -187,8 +185,17 @@ int main(){
 	
 	xuLyLocDanhSachTheoLuong(danhSachNhanVien);
 	
+	sapXepGiamDanTheoLuong(danhSachNhanVien);
+	
+	xuatDanhSachRaFile(danhSachNhanVien, "laodong.txt");
+	
+	giaiPhongBoNho(danhSachNhanVien);
+	
 	return 0;
 }
+
+
+
 
 void nhapDanhSachNhanVien(vector<NhanVien*> &danhSachNhanVien, int soLuongNhanVien){
 	for(int i=0; i<soLuongNhanVien; i++){
@@ -282,6 +289,41 @@ void xuLyLocDanhSachTheoLuong(const vector<NhanVien*> &danhSachNhanVien){
 	
 	vector<NhanVien*> danhSach = locDanhSach(danhSachNhanVien, luong);
 	
-	cout << "\nDanh sach nhan vien co luong cao hon " << luong << " la:" << endl;
-	xuatDanhSachNhanVien(cout, danhSach);
+	if(danhSach.empty())	cout << "\nKhong co nhan vien nao co luong >= " << luong;
+	else{
+		cout << "\nDanh sach nhan vien co luong >= " << luong << " la:" << endl;
+		xuatDanhSachNhanVien(cout, danhSach);
+	}
+
+}
+
+void sapXepGiamDanTheoLuong(vector<NhanVien*> &danhSachNhanVien){
+	for(int i=0; i<danhSachNhanVien.size() - 1; i++){
+		for(int j=i+1; j<danhSachNhanVien.size(); j++){
+			if(danhSachNhanVien[i]->getLuong() < danhSachNhanVien[j]->getLuong() ){
+				swap(danhSachNhanVien[i], danhSachNhanVien[j]);
+			}
+			else if(danhSachNhanVien[i]->getLuong() == danhSachNhanVien[j]->getLuong() ){
+				if(danhSachNhanVien[i]->getHoTen() > danhSachNhanVien[j]->getHoTen() ){
+					swap(danhSachNhanVien[i], danhSachNhanVien[j]);
+				}
+			}
+		}
+	}
+}
+
+void xuatDanhSachRaFile(const vector<NhanVien*> &danhSachNhanVien, string tenFileOutput){
+	ofstream fileOut(tenFileOutput);
+	
+	if(!fileOut){
+		cerr << "\nKhong the mo file " << tenFileOutput;
+		return;
+	}
+	
+	fileOut << "Danh sach nhan vien sap xep theo luong giam dan la:" << endl;
+	xuatDanhSachNhanVien(fileOut, danhSachNhanVien);
+}
+
+void giaiPhongBoNho(vector<NhanVien*> &danhSachNhanVien){
+	for(int i=0; i<danhSachNhanVien.size(); i++)	delete danhSachNhanVien[i];
 }
