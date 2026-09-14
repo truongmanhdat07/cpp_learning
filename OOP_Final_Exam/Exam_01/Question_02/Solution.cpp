@@ -16,6 +16,8 @@ class NhanVien{
 		virtual ~NhanVien(){}
 		
 		virtual double getLuong() = 0;
+		string getMa();
+		
 		virtual void nhap();
 		virtual void xuat(ostream &out);
 		
@@ -53,6 +55,10 @@ void nhapDanhSachNhanVien(vector<NhanVien*> &danhSachNhanVien, int soLuongNhanVi
 void inTieuDe(ostream &out);
 void xuatDanhSachNhanVien(ostream &out, const vector<NhanVien*> &danhSachNhanVien);
 double thongKeLuong(const vector<NhanVien*> &danhSachNhanVien);
+int timKiemTheoMa(const vector<NhanVien*> &danhSachNhanVien, const string maCanTim);
+void timKiemNhanVienTheoMa(const vector<NhanVien*> &danhSachNhanVien);
+vector<NhanVien*> locDanhSach(const vector<NhanVien*> &danhSachNhanVien, double luong);
+void xuLyLocDanhSachTheoLuong(const vector<NhanVien*> &danhSachNhanVien);
 
 
 
@@ -76,7 +82,9 @@ void NhanVien::xuat(ostream &out){
 		<< setw(12) << loaiHopDong;
 }
 
-
+string NhanVien::getMa(){
+	return maNV;
+}
 
 
 
@@ -175,6 +183,10 @@ int main(){
 	
 	cout << "\nTong luong ma cong ty TOTO phai tra cho nhan vien trong 1 thang la:" << thongKeLuong(danhSachNhanVien);
 	
+	timKiemNhanVienTheoMa(danhSachNhanVien);
+	
+	xuLyLocDanhSachTheoLuong(danhSachNhanVien);
+	
 	return 0;
 }
 
@@ -225,4 +237,51 @@ double thongKeLuong(const vector<NhanVien*> &danhSachNhanVien){
 	}
 	
 	return tong;
+}
+
+int timKiemTheoMa(const vector<NhanVien*> &danhSachNhanVien, const string maCanTim){
+	for(int i=0; i<danhSachNhanVien.size(); i++){
+		if(danhSachNhanVien[i]->getMa() == maCanTim)	return i;
+	}
+	
+	return -1;
+}
+
+void timKiemNhanVienTheoMa(const vector<NhanVien*> &danhSachNhanVien){
+	string maCanTim;
+	cout << "\nNhap ma nhan vien can tim:";
+	cin >> ws;
+	getline(cin, maCanTim);
+	
+	int viTri = timKiemTheoMa(danhSachNhanVien, maCanTim);
+	
+	if(viTri != -1){
+		cout << "\nDa tim thay nhan vien co ma " << maCanTim << ":" << endl;
+		inTieuDe(cout);
+		danhSachNhanVien[viTri]->xuat(cout);
+	}
+	else	cout << "\nKhong tim thay nhan vien co ma la " << maCanTim << endl;
+}
+
+vector<NhanVien*> locDanhSach(const vector<NhanVien*> &danhSachNhanVien, double luong){
+	vector<NhanVien*> danhSach;
+	
+	for(int i=0; i<danhSachNhanVien.size(); i++){
+		if(danhSachNhanVien[i]->getLuong() >= luong){
+			danhSach.push_back(danhSachNhanVien[i]);
+		}
+	}
+	
+	return danhSach;
+}
+
+void xuLyLocDanhSachTheoLuong(const vector<NhanVien*> &danhSachNhanVien){
+	double luong;
+	cout << "\nNhap luong toi thieu de loc:";
+	cin >> luong;	cin.ignore();
+	
+	vector<NhanVien*> danhSach = locDanhSach(danhSachNhanVien, luong);
+	
+	cout << "\nDanh sach nhan vien co luong cao hon " << luong << " la:" << endl;
+	xuatDanhSachNhanVien(cout, danhSach);
 }
