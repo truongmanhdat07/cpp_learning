@@ -1,0 +1,26 @@
+5
+1
+NV01
+Nguyen Van An
+26
+250000
+2
+NV02
+Tran Thi Binh
+4.5
+5
+1
+NV03
+Le Van Cuong
+20
+300000
+2
+NV04
+Pham Thi Dung
+3.0
+2
+1
+NV05
+Hoang Van Em
+25
+200000

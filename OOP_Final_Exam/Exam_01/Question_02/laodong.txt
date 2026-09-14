@@ -1,0 +1,8 @@
+Danh sach nhan vien sap xep theo luong giam dan la:
+Ma Nhan Vien   Ho Va Ten                Hop Dong    Thong So 1  Thong So 2  Luong          
+Ma Nhan Vien   Ho Va Ten                Hop Dong    Thong So 1  Thong So 2  Luong          
+NV01           Nguyen Van An            1           26          250000      9000000        
+NV05           Hoang Van Em             1           25          200000      7500000        
+NV03           Le Van Cuong             1           20          300000      6000000        
+NV02           Tran Thi Binh            2           5           4.50        5985000        
+NV04           Pham Thi Dung            2           2           3.00        4200000        
