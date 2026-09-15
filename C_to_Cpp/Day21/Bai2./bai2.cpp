@@ -17,6 +17,10 @@ class DaThuc{
 		
 		DaThuc operator+(const DaThuc &dtk) const;
 		DaThuc operator*(const DaThuc &dtk)	const;
+		float& operator[](int i);
+		const float& operator[](int i) const;
+		
+
 };
 
 
@@ -98,8 +102,13 @@ DaThuc DaThuc::operator*(const DaThuc &dtk) const{
 }
 
 
+float& DaThuc::operator[](int i){
+	return heSo[i];
+}
 
-
+const float& DaThuc::operator[](int i) const{
+	return heSo[i];
+}
 
 
 
@@ -120,4 +129,12 @@ int main(){
 	cout << dt1 + dt2 << endl;
 	cout << dt1 * dt2 << endl;
 	
+	cout << dt1[3];
+	
+	
+	
+	
+	
+	
+	return 0;
 }
