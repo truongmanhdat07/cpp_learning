@@ -1,7 +1,7 @@
 #include<iostream>
 #include<iomanip>
 #include<cmath>
-
+#include<vector>
 using namespace std;
 
 class DaThuc{
@@ -11,6 +11,7 @@ class DaThuc{
 	public:
 		DaThuc() : bac(0), heSo(nullptr){};
 		DaThuc(int bac);
+		~DaThuc(){delete[] heSo;};
 		
 		friend istream& operator>>(istream &in, DaThuc &dt);
 		friend ostream& operator<<(ostream &out, const DaThuc &dt);
@@ -20,8 +21,13 @@ class DaThuc{
 		float& operator[](int i);
 		const float& operator[](int i) const;
 		
-
+		DaThuc daoHam() const;
 };
+
+
+void nhapDanhSach(vector<DaThuc> &danhSach, int soLuong);
+void xuatDanhSach(vector<DaThuc> &danhSach);
+
 
 
 
@@ -89,7 +95,7 @@ DaThuc DaThuc::operator+(const DaThuc &dtk) const{
 }
 
 DaThuc DaThuc::operator*(const DaThuc &dtk) const{
-	int bacTich = bac * dtk.bac;
+	int bacTich = bac + dtk.bac;
 	DaThuc kq(bacTich);
 	
 	for(int i=0 ; i<=bac; i++){
@@ -110,7 +116,17 @@ const float& DaThuc::operator[](int i) const{
 	return heSo[i];
 }
 
-
+DaThuc DaThuc::daoHam() const{
+	if(bac==0)	return DaThuc(0);
+	
+	DaThuc kq(bac-1);
+	
+	for(int i=0; i<=kq.bac; i++){
+		kq[i] = (i+1) * (*this)[i+1];
+	}
+	
+	return kq;
+}
 
 
 
@@ -123,18 +139,31 @@ const float& DaThuc::operator[](int i) const{
 
 
 int main(){
-	DaThuc dt1, dt2;
-	cin >> dt1 >> dt2;
+	int soLuong;
+	cout << "Nhap so luong da thuc:";	cin >> soLuong;
 	
-	cout << dt1 + dt2 << endl;
-	cout << dt1 * dt2 << endl;
+	vector<DaThuc> danhSach(soLuong);
 	
-	cout << dt1[3];
+	nhapDanhSach(danhSach, soLuong);
 	
-	
-	
+	cout << "\nDanh sach da thuc vua nhap la:" << endl;
+	xuatDanhSach(danhSach);
 	
 	
 	
 	return 0;
+}
+
+void nhapDanhSach(vector<DaThuc> &danhSach, int soLuong){
+	for(int i=0; i<soLuong; i++){
+		cout << "Nhap da thuc thu " << i+1 << ":";
+		cin >> danhSach[i];
+	}
+}
+
+void xuatDanhSach(vector<DaThuc> &danhSach){
+	for(int i=0; i<danhSach.size(); i++){
+		cout << "\nDa thuc thu " << i+1 << ":";
+		cout << danhSach[i];
+	}
 }
