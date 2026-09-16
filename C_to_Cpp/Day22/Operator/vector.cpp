@@ -8,8 +8,7 @@ class Vector{
 		double x;
 		double y;
 	public:
-		Vector() : x(0.0), y(0.0){}
-		Vector(double x, double y);
+		Vector(double x = 0.0f, double y = 0.0f) : x(x), y(y){}
 		
 		double doDai() const;
 		
@@ -37,13 +36,6 @@ class Vector{
 };
 
 
-
-
-
-Vector::Vector(double x, double y){
-	this->x = x;
-	this->y = y;
-}
 
 double Vector::doDai() const{
 	return sqrt(x * x + y * y);
@@ -139,31 +131,43 @@ bool Vector::operator>(const Vector &other) const{
 	return ( this->doDai() > other.doDai() );
 }
 
+bool Vector::operator<=(const Vector &other) const{
+	return ( *this < other || *this == other); // return !( *this > other );
+}
+
+bool Vector::operator>=(const Vector &other) const{
+	return ( *this > other || *this == other); // return !( *this < other );
+}
 
 
 
 int main(){
+	double k;
+	cout << "k:";	cin >> k;
 	Vector v1, v2;
-	cin >> v1 >> v2;
+	cout << "v1:" << endl;	cin >> v1;
+	cout << "v2:" << endl;	cin >> v2;
 	cout << "v1 = " << v1 << " , " << "v2 = " <<  v2 << endl;
 	
 	cout << "v1 + v2 = " << v1 + v2 << endl;
 	cout << "v1 - v2 = " << v1 - v2 << endl;
 	cout << "v1 * v2 = " << v1 * v2 << endl;
-	cout << "v1 * 5  = " << v1 * 5  << endl;
+	cout << "v1 * " << k << " = " << v1 * k  << endl;
 
 	v1 += v2;
-	cout << "v1 += v2 = " << v1;
+	cout << "v1 += v2 = " << v1 << endl;
 	
 	Vector v3(3, 3);
-	v3 *= 5;
-	cout << "v3 *= 5 = " << v3 << endl;
+	cout << "v3 = " << v3 << endl;
+	v3 *= k;
+	cout << "v3 *= " << k << " = " << v3 << endl;
 
-	Vector v4(0, 0), v5(0, 0);
-
+	Vector v4(4, 4), v5(5, 5);
 	
-	if(v4 == v5)	cout << "\nv4 == v5";
-	else			cout << "\nv4 != v5";
+	cout << "v4 = " << v4 << " , v5 = " << v5 << endl;
+
+	if(v4 <= v5)	cout << "v4 <= v5";
+	else			cout << "v4 > v5";
 	
 	
 	return 0;
