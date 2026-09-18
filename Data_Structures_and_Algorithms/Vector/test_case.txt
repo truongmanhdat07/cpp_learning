@@ -1,0 +1,16 @@
+5
+101
+Nguyen Van An
+3.2
+102
+Tran Thi Bich
+2.1
+103
+Le Van Cuong
+2.4
+104
+Pham Minh Duc
+3.6
+105
+Hoang Thi Em
+3.8
