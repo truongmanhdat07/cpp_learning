@@ -15,7 +15,7 @@ class SinhVien{
 		string getMaSV() const;
 		float getGpa() const;
 		
-		float setGpa(float gpa);
+		void setGpa(float gpa);
 		
 		void nhap();
 		void xuat() const;
@@ -23,13 +23,20 @@ class SinhVien{
 
 
 void nhapDanhSach(list<SinhVien> &danhSach, int soLuong);
+void inTieuDe();
+void xuatDanhSach(list<SinhVien> &danhSach);
+void congDiem(list<SinhVien> &danhSach, string maSVCanCong);
+void congDiemChoSinhVien(list<SinhVien> &danhSach);
+void xoaSinhVien(list<SinhVien> &danhSach, float nguongGpa);
+void giaiPhongBoNho(list<SinhVien> &danhSach);
+
 
 
 string SinhVien::getMaSV() const{
 	return maSV;
 }
 
-float SinhVien::getGpa() const{
+void SinhVien::getGpa() const{
 	return gpa;
 }
 
@@ -63,6 +70,19 @@ int main(){
 	
 	nhapDanhSach(danhSach, soLuong);
 	
+	cout << "\nDanh sach vua nhap la:" << endl;
+	xuatDanhSach(danhSach);
+	
+	congDiemChoSinhVien(danhSach);
+	
+	xoaSinhVien(danhSach, 2.5);
+	
+	cout << "\nDanh sach sinh vien hien tai:" << endl;
+	xuatDanhSach(danhSach);
+	
+	giaiPhongBoNho(danhSach);
+	
+	return 0;
 }
 
 
@@ -74,3 +94,53 @@ void nhapDanhSach(list<SinhVien> &danhSach, int soLuong){
 	}
 }
 
+void inTieuDe(){
+	cout << left 
+		 << setw(15) << "Ma Sinh Vien"
+		 << setw(25) << "Ho Va Ten"
+		 << setw(10) << "Gpa" << endl;
+}
+
+void xuatDanhSach(list<SinhVien> &danhSach){
+	inTieuDe();
+	
+	for(auto it = danhSach.begin(); it != danhSach.end(); it++){
+		it->xuat();
+	}
+}
+
+void congDiem(list<SinhVien> &danhSach, string maSVCanCong){
+	for(auto it = danhSach.begin(); it != danhSach.end(); it++){
+		if(it->getMaSV() == maSVCanCong){
+			cout << "\nDa tim thay sinh vien co ma " << maSVCanCong << endl;
+			it->setGpa( it->getGpa() + 0.5);
+			cout << "Cong diem thanh cong!";
+			return;
+		}
+	}
+	cout << "\nKhong tim thay sinh vien co ma sinh vien la "  << maSVCanCong;	
+}
+
+void congDiemChoSinhVien(list<SinhVien> &danhSach){
+	string maSVCanCong;
+	cout << "\nNhap ma sinh vien can cong diem:";	getline(cin, maSVCanCong);
+	
+	congDiem(danhSach, maSVCanCong);
+}
+
+void xoaSinhVien(list<SinhVien> &danhSach, float nguongGpa){
+	for(auto it = danhSach.begin(); it != danhSach.end(); ){
+		if(it->getGpa() < nguongGpa){
+			it = danhSach.erase(it);
+		}
+		else{
+			it++;
+		}
+	}
+	cout << "\nXoa thanh cong sinh vien co gpa < " << nguongGpa;
+}
+
+void giaiPhongBoNho(list<SinhVien> &danhSach){
+	danhSach.clear();
+	cout << "\nGiai phong bo nho thanh cong!";
+}
