@@ -22,6 +22,7 @@ class SinhVien{
 
 void nhapDanhSach(list<SinhVien> &danhSach, int soLuong);
 void xuatDanhSach(list<SinhVien> &danhSach);
+void solution(list<SinhVien> &danhSach);
 
 
 
@@ -54,11 +55,6 @@ void SinhVien::xuat() const{
 
 
 
-
-
-
-
-
 int main(){
 	int soLuong;
 	cout << "Nhap so luong sinh vien:";		cin >> soLuong;		cin.ignore();
@@ -70,6 +66,7 @@ int main(){
 	cout << "\nDanh sach sinh vien vua nhap la:" << endl;
 	xuatDanhSach(danhSach);
 	
+	solution(danhSach);
 	
 	return 0;
 }
@@ -88,4 +85,42 @@ void xuatDanhSach(list<SinhVien> &danhSach){
 	for(auto it = danhSach.begin(); it != danhSach.end(); it++){
 		it->xuat();
 	}
+}
+
+void solution(list<SinhVien> &danhSach){
+	cout << "Nhap thong tin sinh vien them cuoi danh sach:" << endl;
+	SinhVien sv1;
+	sv1.nhap();
+	danhSach.push_back(sv1);
+	
+	cout << "Nhap thong tin sinh vien them dau danh sach:" << endl;
+	SinhVien sv2;
+	sv2.nhap();
+	danhSach.push_front(sv2);
+	
+	int viTriXoa;
+	cout << "Nhap vi tri i can xoa:";	cin >> viTriXoa;	cin.ignore();
+
+	auto itXoa = danhSach.begin();
+	for(int i = 0; i < viTriXoa; i++){
+		itXoa++;
+	}
+	danhSach.erase(itXoa);
+	cout << "Xoa thanh cong sinh vien thu " << viTriXoa << " trong danh sach!" << endl;
+	
+	int viTriThayThe;
+	cout << "Nhap vi tri i can thay the:";	cin >> viTriThayThe;	cin.ignore();
+
+	auto itThayThe = danhSach.begin();
+	for(int i = 0; i < viTriThayThe; i++){
+		itThayThe++;
+	}
+
+	cout << "Nhap thong tin sinh vien thay the vao vi tri " << viTriThayThe << " cua danh sach:" << endl;
+	SinhVien sv3;
+	sv3.nhap();
+	*itThayThe = sv3;
+	
+	cout << "\nDanh sach hien tai:" << endl;
+	xuatDanhSach(danhSach);
 }
