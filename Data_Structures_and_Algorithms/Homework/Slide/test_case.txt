@@ -1,0 +1,21 @@
+4
+SV01
+Nguyen Van An
+Nam
+Ha Noi
+15 5 2004
+SV02
+Tran Thi Bich
+Nu
+Da Nang
+20 11 2004
+SV03
+Le Hoang Long
+Nam
+Hai Phong
+8 3 2003
+SV04
+Pham Minh Duc
+Nam
+Quang Ninh
+25 12 2004
