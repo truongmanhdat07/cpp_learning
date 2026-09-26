@@ -24,13 +24,15 @@ class SinhVien{
 
 
 void nhapDanhSach(istream &is, Vector<SinhVien> &danhSach, int soLuong);
-void nhapFile(Vector<SinhVien> &danhSach, string tenFileInput);
 void inTieuDe(ostream &os);
 void xuatDanhSach(ostream &os, Vector<SinhVien> &danhSach);
-void xuatFile(Vector<SinhVien> &danhSach, string tenFileOutput);
 void boSungCuoi(Vector<SinhVien> &danhSach);
 void xoaSinhVien(Vector<SinhVien> &danhSach, string soBaoDanh);
 void xoaSinhVienTheoSBD(Vector<SinhVien> &danhSach);
+void capNhapThongTin(Vector<SinhVien> &danhSach, string soBaoDanh);
+void capNhapThongTinTheoSBD(Vector<SinhVien> &danhSach);
+void hienThiThongTin(Vector<SinhVien> &danhSach, string soBaoDanh);
+void hienThiThongTinTheoSBD(Vector<SinhVien> &danhSach);
 
 
 
@@ -94,6 +96,15 @@ int main(){
 	
 	xoaSinhVienTheoSBD(danhSach);
 	
+	capNhapThongTinTheoSBD(danhSach);
+	
+	hienThiThongTinTheoSBD(danhSach);
+	
+	cout << "\nDanh sach sinh vien hien tai:" << endl;
+	xuatDanhSach(cout, danhSach);
+	
+	
+	
 	return 0;
 }
 
@@ -140,12 +151,57 @@ void xoaSinhVien(Vector<SinhVien> &danhSach, string soBaoDanh){
 			break;
 		}
 	}
-	if(timThay)	cout << "\nXoa thanh cong sinh vien co so bao danh:" << soBaoDanh;
-	else		cout << "\nKhong tim thay sinh vien co so bao danh:" << soBaoDanh;
+	if(timThay)	cout << "\nXoa thanh cong sinh vien co so bao danh:" << soBaoDanh << endl;
+	else		cout << "\nKhong tim thay sinh vien co so bao danh:" << soBaoDanh << endl;
 }
 
 void xoaSinhVienTheoSBD(Vector<SinhVien> &danhSach){
 	string soBaoDanh;
 	cout << "\nNhap so bao danh can xoa:";		getline(cin, soBaoDanh);
 	xoaSinhVien(danhSach, soBaoDanh);
+}
+
+void capNhapThongTin(Vector<SinhVien> &danhSach, string soBaoDanh){
+	bool timThay = false;
+	
+	for(auto it = danhSach.begin() ; it != danhSach.end(); it++){
+		if(it->getSbd() == soBaoDanh){
+			cin >> *it;
+			timThay = true;
+			break;
+		}
+	}
+	if(timThay)	cout << "\nCap nhap thanh cong sinh vien co so bao danh:" << soBaoDanh << endl;
+	else		cout << "\nKhong tim thay sinh vien co so bao danh:" << soBaoDanh << endl;	
+}
+
+void capNhapThongTinTheoSBD(Vector<SinhVien> &danhSach){
+	string soBaoDanh;
+	cout << "\nNhap so bao danh can cap nhap:";		getline(cin, soBaoDanh);
+	capNhapThongTin(danhSach, soBaoDanh);
+}
+
+void hienThiThongTin(Vector<SinhVien> &danhSach, string soBaoDanh){
+    bool timThay = false;
+    
+    for(auto it = danhSach.begin(); it != danhSach.end(); it++){
+        if(it->getSbd() == soBaoDanh){
+            cout << "\nThong tin sinh vien can tim:" << endl;
+            inTieuDe(cout);
+            cout << *it;
+            timThay = true;
+            break;
+        }
+    }
+    
+    if(!timThay){
+        cout << "\nKhong tim thay sinh vien co so bao danh: " << soBaoDanh << endl;
+    }
+}
+
+void hienThiThongTinTheoSBD(Vector<SinhVien> &danhSach){
+    string soBaoDanh;
+    cout << "\nNhap so bao danh can tim de hien thi: ";
+    getline(cin, soBaoDanh);
+    hienThiThongTin(danhSach, soBaoDanh);
 }
