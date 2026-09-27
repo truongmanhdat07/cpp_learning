@@ -1,0 +1,31 @@
+6
+TS01
+Nguyen Phuong Hai
+2007
+Nam
+27.5
+TS02
+Nguyen Quoc Khanh
+2007
+Nam
+26.0
+TS03
+Nguyen Quang Hung
+2008
+Nam
+28.5
+TS04
+Dinh Van Phan Dung
+2007
+Nam
+25.0
+TS05
+Tran Xuan Do
+2007
+Nam
+24.0
+TS06
+Tran Quoc Huy
+2007
+Nam
+29.0
