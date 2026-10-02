@@ -2,7 +2,6 @@
 #define BINARY_TREE_HPP
 
 #include <iostream>
-#include <algorithm>
 using namespace std;
 
 template <typename T>
@@ -63,9 +62,11 @@ class BinaryTree {
         }
 
         int calculateHeight(BNode<T> *current) {
-            if (current == nullptr) return 0;
-            return 1 + max(calculateHeight(current->left), calculateHeight(current->right));
-        }
+		    if (current == nullptr) return 0;
+		    int hLeft = calculateHeight(current->left);
+		    int hRight = calculateHeight(current->right);
+		    return 1 + (hLeft > hRight ? hLeft : hRight);
+		}
 
     public:
         BinaryTree() {
@@ -93,7 +94,6 @@ class BinaryTree {
             num = 1;
         }
 
-        // Chèn vào con bên trái c?a parentVal
         bool insert_left(T parentVal, T value) {
             if (root == nullptr) return false;
             BNode<T> *parent = findNode(root, parentVal);
@@ -104,7 +104,6 @@ class BinaryTree {
             return true;
         }
 
-        // Chèn vào con bên ph?i c?a parentVal
         bool insert_right(T parentVal, T value) {
             if (root == nullptr) return false;
             BNode<T> *parent = findNode(root, parentVal);
