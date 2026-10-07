@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iomanip>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 
@@ -21,6 +22,7 @@ class NV{
 		
 		virtual double getLuong() = 0;
 		string getMa();
+		int getNamSinh();
 		
 		virtual void nhap();
 		virtual void xuat(ostream &os);
@@ -67,7 +69,14 @@ double tongLuong(vector<NV*> &danhSach);
 int timKiemTheoMa(vector<NV*> &danhSach, string ma);
 void xuLyTimKiemTheoMa(vector<NV*> &danhSach);
 
+vector<NV*> locDanhSachTheoLuong(vector<NV*> &danhSach, double luong);
+void xuLyLocDanhSachTheoLuong(vector<NV*> &danhSach);
 
+void sapXepGiamDanTheoLuong(vector<NV*> &danhSach);
+
+void xuatFile(vector<NV*> &danhSach, string tenFileOutput);
+
+void giaiPhongBoNho(vector<NV*> &ds);
 
 
 // NV
@@ -75,12 +84,19 @@ string NV::getMa(){
 	return ma;
 }
 
+int NV::getNamSinh(){
+	return namSinh;
+}
 
 void NV::nhap(){
-	cout << "Nhap ma nhan vien:";	getline(cin, ma);
-	cout << "Nhap ho va ten:";		getline(cin, ten);
-	cout << "Nhap nam sinh:";		cin >> namSinh;		
-	cout << "Nhap luong co ban:";	cin >> luongCB;		cin.ignore();
+    cout << "Nhap ma nhan vien: ";    getline(cin, ma);
+    cout << "Nhap ho va ten: ";       getline(cin, ten);
+    do {
+        cout << "Nhap nam sinh (<= 2006): "; cin >> namSinh;
+        if(namSinh > 2006) cout << "Nam sinh khong hop le! Vui long nhap lai.\n";
+    } while(namSinh > 2006);
+    
+    cout << "Nhap luong co ban: ";    cin >> luongCB;    cin.ignore();
 }
 
 void NV::xuat(ostream &os){
@@ -92,12 +108,7 @@ void NV::xuat(ostream &os){
 }
 
 
-
-
-
-
 // NVKD
-
 double NVKD::getLuong(){
 	double luongTL = luongCB + doanhSo * 0.05 ;
 	
@@ -107,9 +118,13 @@ double NVKD::getLuong(){
 }
 
 void NVKD::nhap(){
-	NV::nhap();
-	cout << "Nhap doanh so ban hang:";		cin >> doanhSo;		cin.ignore();
-	cout << "Nhap cap bac:";				getline(cin, capBac);
+    NV::nhap();
+    do {
+        cout << "Nhap doanh so ban hang (>= 0): "; cin >> doanhSo; cin.ignore();
+        if(doanhSo < 0) cout << "Doanh so phai >= 0! Vui long nhap lai.\n";
+    } while(doanhSo < 0);
+    
+    cout << "Nhap cap bac: "; getline(cin, capBac);
 }
 
 void NVKD::xuat(ostream &os){
@@ -120,12 +135,7 @@ void NVKD::xuat(ostream &os){
 }
 
 
-
-
-
-
 //NVGV
-
 double NVGV::getLuong(){
 	double luongTL = luongCB + soDon * donGia;
 	
@@ -135,9 +145,13 @@ double NVGV::getLuong(){
 }
 
 void NVGV::nhap(){
-	NV::nhap();
-	cout << "Nhap so don thanh cong:";		cin >> soDon;
-	cout << "Nhap don gia:";				cin >> donGia;		cin.ignore();
+    NV::nhap();
+    do {
+        cout << "Nhap so don thanh cong (>= 0): "; cin >> soDon;
+        if(soDon < 0) cout << "So don phai >= 0! Vui long nhap lai.\n";
+    } while(soDon < 0);
+    
+    cout << "Nhap don gia: "; cin >> donGia; cin.ignore();
 }
 
 void NVGV::xuat(ostream &os){
@@ -146,10 +160,6 @@ void NVGV::xuat(ostream &os){
         << setw(15) << donGia
         << setw(18) << getLuong() << endl;
 }
-
-
-
-
 
 
 
@@ -165,6 +175,14 @@ int main(){
 	cout << "\nTong luong cong ty can phan chi tra cho nhan su la: " << tongLuong(danhSach);
 	
 	xuLyTimKiemTheoMa(danhSach);
+	
+	xuLyLocDanhSachTheoLuong(danhSach);
+	
+	sapXepGiamDanTheoLuong(danhSach);
+	
+	xuatFile(danhSach, "nhansu.txt");
+	
+	giaiPhongBoNho(danhSach);
 	
 	return 0;
 }
@@ -229,10 +247,60 @@ void xuLyTimKiemTheoMa(vector<NV*> &danhSach){
 	
 	int viTri = timKiemTheoMa(danhSach, ma);
 	
-	if(viTri = -1)	cout << "\nKhong tim thay nhan vien co ma " << ma;
-	else{
+	
+	if(viTri != -1){
 		cout << "\nTim thay nhan vien co ma " << ma << ":" << endl;
 		inTieuDe(cout);
 		danhSach[viTri]->xuat(cout);
 	}
+	else	cout << "\nKhong tim thay nhan vien co ma " << ma;
+}
+
+vector<NV*> locDanhSachTheoLuong(vector<NV*> &danhSach, double luong){
+	vector<NV*> danhSachLoc;
+	for(int i=0; i<danhSach.size(); i++){
+		if(danhSach[i]->getLuong() >= luong ){
+			danhSachLoc.push_back(danhSach[i]);
+		}
+	}
+	return danhSachLoc;
+}
+
+void xuLyLocDanhSachTheoLuong(vector<NV*> &danhSach){
+	double luong;
+	cout << "\nNhap muc luong can loc: ";	cin >> luong;	cin.ignore();
+	
+	vector<NV*> danhSachLoc = locDanhSachTheoLuong(danhSach, luong);
+	
+	if(danhSachLoc.empty())	cout << "\nKhong co nhan vien nao co luong >= " << luong;
+	else{
+		cout << "\nDanh sach nhan vien co luong >= " << luong << " la: " << endl;
+		xuatDanhSach(cout, danhSachLoc);
+	}
+}
+
+bool cmp(NV* nv1, NV* nv2) {
+    if (nv1->getLuong() != nv2->getLuong()) {
+        return nv1->getLuong() > nv2->getLuong(); // luong giam dan = true
+    }
+    return nv1->getNamSinh() < nv2->getNamSinh();
+}
+
+void sapXepGiamDanTheoLuong(vector<NV*> &danhSach){
+	sort(danhSach.begin(), danhSach.end(), cmp);
+}
+
+void xuatFile(vector<NV*> &danhSach, string tenFileOutput){
+	ofstream fileOut(tenFileOutput);
+	if(!fileOut){
+		cerr << "\nKhong the mo file " << tenFileOutput;
+		return;
+	}
+	
+	fileOut << "\nDanh sach nhan vien sau khi sap xep la:" << endl;
+	xuatDanhSach(fileOut, danhSach);
+}
+
+void giaiPhongBoNho(vector<NV*> &ds){
+	for(int i=0; i<ds.size(); i++)		delete ds[i];
 }
