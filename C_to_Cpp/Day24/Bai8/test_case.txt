@@ -1,0 +1,19 @@
+3
+Nguyen Van An
+2005
+9.5
+Tran Thi Binh
+2005
+8.5
+Le Van Cuong
+2004
+9.2
+Pham Van Dung
+1985
+350
+Hoang Thi Mai
+1990
+280
+Dang Van Phuc
+1982
+320
