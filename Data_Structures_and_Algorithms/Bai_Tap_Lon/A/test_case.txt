@@ -1,0 +1,25 @@
+6
+SV01
+Nguyen Van A
+2005
+8.5
+SV02
+Tran Thi B
+2005
+9.2
+SV03
+Le Van C
+2004
+6.8
+SV04
+Pham Minh D
+2005
+7.5
+SV05
+Hoang Thi E
+2004
+4.5
+SV06
+Vu Quoc F
+2005
+9.8
