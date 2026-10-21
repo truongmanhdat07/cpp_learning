@@ -1,0 +1,113 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+class DaySo{
+	private:
+		int n = 0;
+		int *mang = nullptr;
+	public:
+		DaySo(){}
+		DaySo(int n, int *mang){
+			this->n = n;
+			this->mang = new int[n];
+			for(int i=0; i<n; i++){
+				this->mang[i] = mang[i];
+			}
+		}
+		~DaySo(){
+			delete[] mang;
+		}
+		
+		friend istream& operator>>(istream &is, DaySo &ds){
+			cout << "\nNhap so phan tu:";		is >> ds.n;
+			ds.mang = new int[ds.n];
+			for(int i=0; i<ds.n; i++){
+				cout << "Nhap phan tu thu " << i+1 << ":";
+				is >> ds.mang[i];
+			}
+			return is;
+		}
+		
+		friend ostream& operator<<(ostream &os, DaySo &ds){
+			for(int i=0; i<ds.n; i++){
+				os << ds.mang[i] << "   ";
+			}
+			return os;
+		}
+		
+		int maxChan(){
+			int max;
+			bool coSoChan = false;
+			for(int i=0; i<n; i++){
+				if(mang[i] % 2 == 0){
+					if(coSoChan == false){
+						coSoChan = true;
+						max = mang[i];
+					}
+					else if(mang[i] > max){
+					max = mang[i];
+					}
+				}
+			}
+			if(coSoChan == false){
+				cout << "\nKhong co so chan nao trong day!";
+				return -1;
+			}
+			return max;
+		}
+		
+		int tichTrongKhoang(int a, int b){
+			int tich = 1;
+			for(int i=0; i<n; i++){
+				if(mang[i] >= a && mang[i] <= b)	tich *= mang[i];
+			}
+			return tich;
+		}
+		
+		bool daySoAm(){
+			bool mangAm = true;
+			for(int i=0; i<n; i++){
+				if(mang[i] >= 0){
+					mangAm = false;
+					break;
+				}
+			}
+			return mangAm;
+		}
+		
+		void sapXep(){
+			for(int i=0; i<n-1; i++){
+				for(int j=i+1; j<n; j++){
+					if(mang[i] > mang[j]){
+						int temp = mang[i];
+						mang[i] = mang[j];
+						mang[j] = temp;
+					}
+				}
+			}
+		}
+
+};
+
+
+
+int main(){
+	DaySo ds1;
+	cout << "Nhap day so :";
+	cin >> ds1;
+	cout << "Day so vua nhap la:" << ds1;
+	cout << "\nMax chan cua day la:" << ds1.maxChan();
+	
+	int a, b;
+	cout << "\nNhap [a,b] = ";	cin >> a >> b;
+	cout << "Tich cac phan tu trong khoang [a,b] la:" << ds1.tichTrongKhoang(a,b);
+	
+	if(ds1.daySoAm() == true)	cout << "\nDay la day toan so am";
+	else	   					cout << "\nDay khong phai day toan so am";
+	
+	ds1.sapXep();
+	cout << "\nDay so sau khi sap xep tang dan la:" <<  ds1;
+	
+	return 0;
+}
