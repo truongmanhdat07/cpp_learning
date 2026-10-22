@@ -1,5 +1,5 @@
 #ifndef MY_LIST_H
-#defile MY_LIST_H
+#define MY_LIST_H
 
 #include<iostream>
 using namespace std;
@@ -39,7 +39,7 @@ class SingleList{
 			count ++;
 		}
 		
-		const getHead() const{
+		const Node<T> *getHead() const{
 			return head;
 		}
 		
