@@ -62,3 +62,5 @@ class SingleList{
 			count = 0;
 		}
 };
+
+#endif
