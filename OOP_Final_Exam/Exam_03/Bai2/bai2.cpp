@@ -60,7 +60,7 @@ class Oto : public Xe{
 class XeMay : public Xe{
 	private:
 		int phanKhoi;
-	private:
+	public:
 		XeMay(){}
 		XeMay(string bienSo, string mau, int phanKhoi): Xe(bienSo, mau), phanKhoi(phanKhoi){};
 		
@@ -98,12 +98,16 @@ void xuatDanhSachOto(vector<Oto> &danhSachOto){
 	if(dem == 0)	cout << "\nKhong co xe nao co 7 cho ";
 }
 
-float maxTaiTrong(vector<Oto> &danhSachOto){
+int maxTaiTrong(vector<Oto> &danhSachOto){
 	float max = danhSachOto[0].getTaiTrong();
+	int viTri = 0;
 	for(int i=1; i<danhSachOto.size(); i++){
-		if(danhSachOto[i].getTaiTrong() > max)	max = danhSachOto[i].getTaiTrong();
+		if(danhSachOto[i].getTaiTrong() > max){
+			max = danhSachOto[i].getTaiTrong();	
+			viTri = i;
+		}	
 	}
-	return max;
+	return viTri;
 }
 
 float tongTaiTrong(vector<Oto> &danhSachOto){
@@ -114,25 +118,70 @@ float tongTaiTrong(vector<Oto> &danhSachOto){
 	return tong;
 }
 
-float maxTaiTrongMauDo(vector<Oto> &danhSachOto){
-	float max = -1;
-	for(int i=0; i<danhSachOto.size(); i++){
-		if(danhSachOto[i].getMau() == "do")		max = danhSachOto[i].getTaiTrong();
-	}
-	
-	if(max == -1){
-		cout << "\nKhong co xe mau do!";
-		return -1;
-	}
-	
-	for(int i=0; i<danhSachOto.size(); i++){
-		if(danhSachOto[i].getMau() == "do"){
-			if(danhSachOto[i].getTaiTrong() > max)	max = danhSachOto[i].getTaiTrong();
-		}
-	}
-	return max;
+void xuatOtoMauDoMaxTaiTrong(vector<Oto> &danhSachOto){
+    int viTri = -1;
+    float max = -1;
+    
+    for(int i = 0; i < danhSachOto.size(); i++){
+        if(danhSachOto[i].getMau() == "do"){
+            if(viTri == -1 || danhSachOto[i].getTaiTrong() > max){
+                max = danhSachOto[i].getTaiTrong();
+                viTri = i;
+            }
+        }
+    }
+    
+    if(viTri == -1){
+        cout << "\nKhong co xe o to mau do nao trong danh sach!" << endl;
+    } else {
+        cout << "\nXe mau do co tai trong max la: " << endl;
+        danhSachOto[viTri].xuat();
+    }
 }
 
+
+void xuatDanhSachXeMay(vector<XeMay> &danhSachXeMay){
+	for(int i=0; i<danhSachXeMay.size(); i++){
+		danhSachXeMay[i].xuat();
+	}
+}
+
+int maxPhanKhoi(vector<XeMay> &danhSachXeMay){
+	int max = danhSachXeMay[0].getPhanKhoi();
+	int viTri = 0;
+	for(int i=1; i<danhSachXeMay.size(); i++){
+		if(danhSachXeMay[i].getPhanKhoi() > max){
+			max = danhSachXeMay[i].getPhanKhoi();	
+			viTri = i;
+		}
+	}
+	return viTri;
+}
+
+void thongKeMauXeMay(vector<XeMay> &danhSachXeMay){
+    int demDo = 0, demVang = 0, demXanh = 0;
+    
+    for(int i = 0; i < danhSachXeMay.size(); i++){
+        if(danhSachXeMay[i].getMau() == "do")        demDo++;
+        else if(danhSachXeMay[i].getMau() == "vang") demVang++;
+        else if(danhSachXeMay[i].getMau() == "xanh") demXanh++;
+    }
+    
+    cout << "\nSo luong xe may theo tung mau:" << endl;
+    cout << "Mau do  : " << demDo   << " xe" << endl;
+    cout << "Mau vang: " << demVang << " xe" << endl;
+    cout << "Mau xanh: " << demXanh << " xe" << endl;
+    
+    int maxMau = demDo;
+    if(demVang > maxMau)  maxMau = demVang;
+    if(demXanh > maxMau)  maxMau = demXanh;
+    
+    
+    cout << "\nMau co nhieu xe may nhat (" << maxMau << " xe) la: ";
+    if(demDo == maxMau)   cout << "do ";
+    if(demVang == maxMau) cout << "vang ";
+    if(demXanh == maxMau) cout << "xanh ";
+}
 
 int main(){
 	int n,m;
@@ -142,14 +191,26 @@ int main(){
 	
 	nhapDanhSach(danhSachOto, n);
 	
-	cout << "\nDanh sach oto:" << endl;
+	cout << "\nDanh sach oto 7 cho:" << endl;
 	xuatDanhSachOto(danhSachOto);
 	
-	cout << "\nMax tai trong:" << maxTaiTrong(danhSachOto);
-	cout << "\nTong tai trong xe 4 cho ngoi = " << tongTaiTrong(danhSachOto);
-	cout << "\nTai trong lon nhat cua xe mau do la:" << maxTaiTrongMauDo(danhSachOto);
+	cout << "\nXe max tai trong:" << endl; danhSachOto[maxTaiTrong(danhSachOto)].xuat();
+	cout << "\nTong tai trong xe 4 cho ngoi = " << tongTaiTrong(danhSachOto) << endl;
 	
+	xuatOtoMauDoMaxTaiTrong(danhSachOto);	
 	
+	cout << "\nNhap so luong xe may:";		cin >> m;		cin.ignore();
+	
+	vector<XeMay> danhSachXeMay(m);
+	
+	nhapDanhSach(danhSachXeMay, m);
+	
+	cout << "\nDanh sach xe may vua nhap la:" << endl;
+	xuatDanhSachXeMay(danhSachXeMay);
+	
+	cout << "\nXe co phan khoi max la:" << endl; danhSachXeMay[maxPhanKhoi(danhSachXeMay)].xuat();
+	
+	thongKeMauXeMay(danhSachXeMay);
 	
 	return 0;
 }
