@@ -1,0 +1,113 @@
+5
+
+001200000001
+
+Nguyen Van An
+
+1980
+
+4.33
+
+001200000002
+
+Tran Thi Binh
+
+1992
+
+3.00
+
+001200000003
+
+Le Van Cuong
+
+1975
+
+4.98
+
+001200000004
+
+Pham Minh Duc
+
+1998
+
+2.34
+
+001200000005
+
+Hoang Thi Mai
+
+1988
+
+3.66
+
+Tran Thi Binh
+
+
+
+7
+
+001201000001
+
+Doan Van Hai
+
+1
+
+8.5
+
+001201000002
+
+Vu Thi Hoa
+
+2
+
+4.0
+
+001201000003
+
+Bui Duc Kien
+
+1
+
+9.0
+
+001201000004
+
+Dinh Thu Lan
+
+3
+
+6.5
+
+001201000005
+
+Ngo Quang Minh
+
+2
+
+3.5
+
+001201000006
+
+Nguyen Phuong Nga
+
+3
+
+7.8
+
+001201000007
+
+Trinh Quoc Phong
+
+1
+
+5.2
+
+5.0
+
+001201000008
+
+Phan Thanh Tung
+
+2
+
+4.5
