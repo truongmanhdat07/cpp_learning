@@ -192,6 +192,30 @@ class SingleList {
 	        cout << "nullptr\n";
 	    }
 	
+	    void sort(int (*comp)(T, T) = nullptr) {
+	        for (iterator i = begin(); i != end(); i++) {
+	            iterator best = i;
+	            iterator j = i;
+	            j++;
+	            for (; j != end(); j++) {
+	                if (comp != nullptr) {
+	                    if (comp(*j, *best)) {
+	                        best = j;
+	                    }
+	                } else {
+	                    if (*j < *best) {
+	                        best = j;
+	                    }
+	                }
+	            }
+	            if (best != i) {
+	                T temp = *i;
+	                *i = *best;
+	                *best = temp;
+	            }
+	        }
+	    }
+
 	    iterator begin() { 
 	        return iterator(head); 
 	    }
