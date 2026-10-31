@@ -60,7 +60,43 @@ class Vector {
         int cap, num;
         T *buff;
 
+        void pushdown(int i, int n, int (*comp)(T, T)) {
+            int best = i;
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
+
+            if (comp != nullptr) {
+                if (left < n && comp(buff[best], buff[left]))
+                    best = left;
+                if (right < n && comp(buff[best], buff[right]))
+                    best = right;
+            } else {
+                if (left < n && buff[best] < buff[left])
+                    best = left;
+                if (right < n && buff[best] < buff[right])
+                    best = right;
+            }
+
+            if (best != i) {
+                T temp = buff[i];
+                buff[i] = buff[best];
+                buff[best] = temp;
+                pushdown(best, n, comp);
+            }
+        }
+
     public:
+        void sort(int (*comp)(T, T) = nullptr) {
+            for (int i = num / 2 - 1; i >= 0; i--)
+                pushdown(i, num, comp);
+
+            for (int i = num - 1; i > 0; i--) {
+                T temp = buff[0];
+                buff[0] = buff[i];
+                buff[i] = temp;
+                pushdown(0, i, comp);
+            }
+        }
         Vector() {
             cap = num = 0;
             buff = nullptr;
