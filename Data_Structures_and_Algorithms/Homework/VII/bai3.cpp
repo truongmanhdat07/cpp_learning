@@ -42,46 +42,52 @@ int compare_TuDien(TuDien a, TuDien b) {
     return 0;
 }
 
-void docTuTep(BST<TuDien> &cay, string tenTep) {
-    ifstream fin(tenTep);
+void inTieuDe(ostream &os) {
+    os << left << setw(20) << "Tu tieng Anh" << "Nghia tieng Viet" << endl;
+}
+
+// 1. Doc du lieu tu dien nap vao cay tu file
+void docFile(BST<TuDien> &cay, string tenFile) {
+    ifstream fin(tenFile);
     if (!fin.is_open()) {
-        fin.open("Bai_Tap_Ve_Nha/VII/" + tenTep);
+        fin.open("Bai_Tap_Ve_Nha/VII/" + tenFile);
     }
     if (!fin.is_open()) {
-        cout << "Khong the mo tep " << tenTep << "\n";
+        cout << "Khong the mo file " << tenFile << endl;
         return;
     }
 
-    string line;
-    int dem = 0;
-    while (getline(fin, line)) {
-        if (line.empty()) continue;
+    int soLuong = 0;
+    fin >> soLuong;
+    fin.ignore();
 
-        size_t pos = line.find(':');
-        if (pos != string::npos) {
-            string tu = line.substr(0, pos);
-            string nghia = line.substr(pos + 1);
+    for (int i = 0; i < soLuong; i++) {
+        string line;
+        if (!getline(fin, line)) break;
+        if (line.empty()) {
+            i--;
+            continue;
+        }
 
-            while (!tu.empty() && tu.back() == ' ') tu.pop_back();
+        size_t viTri = line.find(';');
+        if (viTri != string::npos) {
+            string tu = line.substr(0, viTri);
+            string nghia = line.substr(viTri + 1);
+
+            while (!tu.empty() && (tu.back() == ' ' || tu.back() == '\r')) tu.pop_back();
             while (!tu.empty() && tu.front() == ' ') tu.erase(0, 1);
+            while (!nghia.empty() && (nghia.back() == ' ' || nghia.back() == '\r')) nghia.pop_back();
             while (!nghia.empty() && nghia.front() == ' ') nghia.erase(0, 1);
 
             cay.insert(TuDien(tu, nghia));
-            dem++;
-        } else {
-            string tu = line;
-            string nghia = "";
-            if (getline(fin, nghia)) {
-                cay.insert(TuDien(tu, nghia));
-                dem++;
-            }
         }
     }
 
     fin.close();
-    cout << "Da nap thanh cong " << dem << " tu tu tep " << tenTep << "\n";
+    cout << "Da doc thanh cong " << soLuong << " tu tu file " << tenFile << endl;
 }
 
+// 2. Bo sung tu moi vao cay
 void boSungTu(BST<TuDien> &cay) {
     string tu, nghia;
     cout << "Nhap tu tieng Anh: ";
@@ -91,13 +97,14 @@ void boSungTu(BST<TuDien> &cay) {
 
     TuDien canThem(tu, "");
     if (cay.contains(canThem)) {
-        cout << "Tu \"" << tu << "\" da ton tai trong tu dien\n";
+        cout << "Tu \"" << tu << "\" da ton tai trong tu dien" << endl;
     } else {
         cay.insert(TuDien(tu, nghia));
-        cout << "Da them tu \"" << tu << "\" thanh cong\n";
+        cout << "Them tu \"" << tu << "\" thanh cong" << endl;
     }
 }
 
+// 3. Xoa bo mot tu khoi cay
 void xoaTu(BST<TuDien> &cay) {
     string tu;
     cout << "Nhap tu can xoa: ";
@@ -105,61 +112,68 @@ void xoaTu(BST<TuDien> &cay) {
 
     TuDien canXoa(tu, "");
     if (!cay.contains(canXoa)) {
-        cout << "Khong tim thay tu \"" << tu << "\" de xoa\n";
+        cout << "Khong tim thay tu \"" << tu << "\" de xoa" << endl;
     } else {
         cay.erase(canXoa);
-        cout << "Da xoa tu \"" << tu << "\" khoi tu dien thanh cong\n";
+        cout << "Xoa tu \"" << tu << "\" thanh cong" << endl;
     }
 }
 
+// 4. Tim kiem tu trong tu dien
 void timKiemTu(BST<TuDien> &cay) {
     string tu;
-    cout << "Nhap tu can tra cuu: ";
+    cout << "Nhap tu can tim: ";
     getline(cin, tu);
 
     TuDien canTim(tu, "");
-    BSTNode<TuDien> *found = cay.find(canTim);
+    BSTNode<TuDien> *node = cay.find(canTim);
 
-    if (found != nullptr) {
-        cout << "Nghia cua tu \"" << found->data.getTu() << "\": " << found->data.getNghia() << "\n";
+    if (node != nullptr) {
+        cout << "Tim thay: " << node->data.getTu() << " -> " << node->data.getNghia() << endl;
     } else {
-        cout << "Khong tim thay tu \"" << tu << "\" trong tu dien\n";
+        cout << "Khong tim thay tu \"" << tu << "\" trong tu dien" << endl;
     }
 }
 
-void ghiNodeVaoTep(BSTNode<TuDien> *node, ofstream &fout) {
+// 5. Luu cay vao file
+void ghiFileDeQuy(BSTNode<TuDien> *node, ofstream &fout) {
     if (node == nullptr) return;
-    fout << node->data.getTu() << ": " << node->data.getNghia() << "\n";
-    ghiNodeVaoTep(node->left, fout);
-    ghiNodeVaoTep(node->right, fout);
+    fout << node->data.getTu() << " ; " << node->data.getNghia() << endl;
+    ghiFileDeQuy(node->left, fout);
+    ghiFileDeQuy(node->right, fout);
 }
 
-void luuVaoTep(BST<TuDien> &cay, string tenTep) {
-    ofstream fout(tenTep);
+void ghiFile(BST<TuDien> &cay, string tenFile) {
+    ofstream fout(tenFile);
     if (!fout.is_open()) {
-        cout << "Khong the tao tep " << tenTep << "\n";
+        fout.open("Bai_Tap_Ve_Nha/VII/" + tenFile);
+    }
+    if (!fout.is_open()) {
+        cout << "Khong the mo file " << tenFile << " de ghi" << endl;
         return;
     }
 
-    ghiNodeVaoTep(cay.getRoot(), fout);
+    fout << cay.size() << endl;
+    ghiFileDeQuy(cay.getRoot(), fout);
     fout.close();
-    cout << "Da luu toan bo tu dien vao tep " << tenTep << " thanh cong\n";
+    cout << "Da ghi thanh cong toan bo tu dien vao file " << tenFile << endl;
 }
 
-void inOrderTuDien(BSTNode<TuDien> *node) {
+// Hien thi toan bo tu dien theo thu tu In-order (A -> Z)
+void inOrderTuDien(BSTNode<TuDien> *node, ostream &os) {
     if (node == nullptr) return;
-    inOrderTuDien(node->left);
-    cout << node->data << "\n";
-    inOrderTuDien(node->right);
+    inOrderTuDien(node->left, os);
+    os << node->data << endl;
+    inOrderTuDien(node->right, os);
 }
 
-void hienThiToanBo(BST<TuDien> &cay) {
+void hienThiDanhSach(BST<TuDien> &cay, ostream &os) {
     if (cay.empty()) {
-        cout << "Tu dien hien dang rong\n";
+        os << "Tu dien hien dang rong" << endl;
         return;
     }
-    cout << left << setw(20) << "Tu tieng Anh" << "Nghia tieng Viet" << "\n";
-    inOrderTuDien(cay.getRoot());
+    inTieuDe(os);
+    inOrderTuDien(cay.getRoot(), os);
 }
 
 int main() {
@@ -168,11 +182,11 @@ int main() {
 
     do {
         cout << "\nCHUONG TRINH TRA CUU TU DIEN\n";
-        cout << "1. Doc du lieu tu dien nap vao cay tu tep\n";
+        cout << "1. Doc du lieu tu dien nap vao cay tu file\n";
         cout << "2. Bo sung tu moi vao cay\n";
         cout << "3. Xoa bo mot tu khoi cay\n";
         cout << "4. Tim kiem tu\n";
-        cout << "5. Luu cay vao tep\n";
+        cout << "5. Luu cay vao file\n";
         cout << "6. Hien thi toan bo tu dien theo thu tu tu dien\n";
         cout << "0. Thoat\n";
         cout << "Nhap lua chon: ";
@@ -181,11 +195,11 @@ int main() {
 
         switch (chon) {
             case 1: {
-                string tenTep;
-                cout << "Nhap ten tep (an Enter de dung tudien.txt): ";
-                getline(cin, tenTep);
-                if (tenTep.empty()) tenTep = "tudien.txt";
-                docTuTep(tuDien, tenTep);
+                string tenFile;
+                cout << "Nhap ten file (an Enter de dung tudien.txt): ";
+                getline(cin, tenFile);
+                if (tenFile.empty()) tenFile = "tudien.txt";
+                docFile(tuDien, tenFile);
                 break;
             }
             case 2:
@@ -198,21 +212,21 @@ int main() {
                 timKiemTu(tuDien);
                 break;
             case 5: {
-                string tenTep;
-                cout << "Nhap ten tep de luu (an Enter de dung tudien_out.txt): ";
-                getline(cin, tenTep);
-                if (tenTep.empty()) tenTep = "tudien_out.txt";
-                luuVaoTep(tuDien, tenTep);
+                string tenFile;
+                cout << "Nhap ten file de luu (an Enter de dung tudien_out.txt): ";
+                getline(cin, tenFile);
+                if (tenFile.empty()) tenFile = "tudien_out.txt";
+                ghiFile(tuDien, tenFile);
                 break;
             }
             case 6:
-                hienThiToanBo(tuDien);
+                hienThiDanhSach(tuDien, cout);
                 break;
             case 0:
-                cout << "Ket thuc chuong trinh tra cuu tu dien\n";
+                cout << "Ket thuc chuong trinh tra cuu tu dien" << endl;
                 break;
             default:
-                cout << "Lua chon khong hop le, vui long chon lai\n";
+                cout << "Lua chon khong hop le, vui long chon lai" << endl;
                 break;
         }
     } while (chon != 0);
