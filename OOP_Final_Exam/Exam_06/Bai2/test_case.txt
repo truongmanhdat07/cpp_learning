@@ -1,0 +1,38 @@
+6
+MH01
+Tivi Sony 4K
+Nhat Ban
+1
+15
+24
+MH02
+Tu lanh Samsung
+Han Quoc
+2
+8
+12
+MH03
+May giat LG
+Viet Nam
+1
+20
+18
+MH04
+Dieu hoa Daikin
+Thai Lan
+3
+12
+6
+MH05
+Lo vi song Panasonic
+Nhat Ban
+2
+25
+24
+MH06
+Quat dien Senko
+Viet Nam
+3
+50
+12
+Tivi Sony 4K
