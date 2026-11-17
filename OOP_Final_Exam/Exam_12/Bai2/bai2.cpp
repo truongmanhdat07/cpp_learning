@@ -53,7 +53,7 @@ class ThucPham : public HangHoa{
 		void nhap(){
 			HangHoa::nhap();
 			cout << "Nhap hang su dung:";		cin >> hanSuDung;
-			cout << "Nhap phiBaoQuan:";			cin >> phiBaoQuan;		cin.ignore();
+			cout << "Nhap phi bao quan:";			cin >> phiBaoQuan;		cin.ignore();
 		}
 		
 		void xuat(){
@@ -68,7 +68,7 @@ class GiaDung : public HangHoa{
 		int congSuat;
 		int thoiGianBaoHanh;
 	public:
-		GiaDung(string maHang = "", string tenHang = "", int soLuong = 0, long long giaNhap = 0.0f, int congSuat, int thoiGianBaoHanh)
+		GiaDung(string maHang = "", string tenHang = "", int soLuong = 0, long long giaNhap = 0.0f, int congSuat = 0, int thoiGianBaoHanh = 0)
 		: HangHoa(maHang, tenHang, soLuong, giaNhap), congSuat(congSuat), thoiGianBaoHanh(thoiGianBaoHanh){}
 		
 		int getCongSuat(){
@@ -91,3 +91,103 @@ class GiaDung : public HangHoa{
 				 << setw(12) << thoiGianBaoHanh << endl;
 		}
 };
+
+template<typename T>
+void nhapDanhSach(list<T> &ds, int sl){
+	for(int i=0; i<sl; i++){
+		cout << "Nhap hang hoa thu " << i+1 << ":" << endl;
+		T x;
+		x.nhap();
+		ds.push_back(x);
+	}
+}
+
+void maxGiaBan(list<ThucPham> &dstp){
+	long long max = dstp.begin()->getGiaBan();
+	for(auto it = dstp.begin(); it != dstp.end(); it++){
+		if(it->getGiaBan() > max)	max = it->getGiaBan();
+	}
+	
+	cout << "\nThuc pham co gia ban cao nhat la:" << endl;
+	for(auto it = dstp.begin(); it != dstp.end(); it++){
+		if(it->getGiaBan() == max)		it->xuat();
+	}
+}
+
+void thongKeHetHan(list<ThucPham> &dstp){
+	int dem = 0;
+	for(auto it = dstp.begin(); it != dstp.end(); it++){
+		if(it->getHanSuDung() <= 3){
+			if(dem == 0)		cout << "\nDanh sach thuc pham sap het han la:" << endl;
+			it->xuat();
+			dem++;
+		}
+	}
+	if(dem == 0) cout << "\nKhong co thuc pham nao sap het han";
+}
+
+void maxCongSuat(list<GiaDung> &dsgd){
+	int max = dsgd.begin()->getCongSuat();
+	for(auto it = dsgd.begin(); it != dsgd.end(); it++){
+		if(it->getCongSuat() > max)	max = it->getCongSuat();
+	}
+	
+	cout << "\nGia dung co cong suat cao nhat la:" << endl;
+	for(auto it = dsgd.begin(); it != dsgd.end(); it++){
+		if(it->getCongSuat() == max)		it->xuat();
+	}
+}
+
+void thongKeBaoHanh(list<GiaDung> &dsgd){
+	int bhn = 0, kbhn = 0;
+	for(auto it = dsgd.begin(); it != dsgd.end(); it++){
+		if(it->getThoiGianBaoHanh() >= 12)		bhn++;
+		else									kbhn++;
+	}
+	
+	cout << "\nThong ke so luong san pham:" << endl;
+	cout << "TGBH >= 12 :" << bhn << endl;
+	cout << "TGBBH < 12 :" << kbhn << endl;
+}
+
+void timKiemTheoMa(list<GiaDung> &dsgd){
+	string ma;
+	cout << "\nNhap ma can tim:";		getline(cin >> ws, ma);
+	
+	bool timThay = false;
+	for(auto it = dsgd.begin(); it != dsgd.end(); it++){
+		if(it->getMaHang() == ma){
+			if(!timThay)	cout << "\nDa tim thay do gia dung co ma " << ma << ":" << endl;
+			it->xuat();
+			timThay = true;
+		}
+	}
+	if(!timThay)	cout << "\nKhong tim thay do gia dung co ma "  << ma << endl;
+}
+
+int main(){
+	int n;
+	cout << "Nhap so luong thuc pham:";		cin >> n;		cin.ignore();
+	list<ThucPham> dstp;
+	
+	nhapDanhSach(dstp, n);
+	
+	maxGiaBan(dstp);
+	
+	thongKeHetHan(dstp);
+	
+	
+	int m;
+	cout << "\nNhap so luong gia dung:";	cin >> m;		cin.ignore();
+	list<GiaDung> dsgd;
+	
+	nhapDanhSach(dsgd, m);
+	
+	maxCongSuat(dsgd);
+	
+	thongKeBaoHanh(dsgd);
+	
+	timKiemTheoMa(dsgd);
+	
+	return 0;
+}
